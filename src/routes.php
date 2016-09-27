@@ -86,9 +86,10 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
 		
-		echo json_encode($data);
 		
-		 
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 	}catch (Exception $e){
 		
 		$data["status"] = 'error';
