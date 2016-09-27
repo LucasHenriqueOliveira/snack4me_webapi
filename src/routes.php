@@ -4,6 +4,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \App\Entity\User;
+use \App\Entity\Vuser;
 
 $configuration = [
     'settings' => [
@@ -75,6 +76,32 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
 						->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }
 
+});
+
+
+
+/** listar os usuarios dados importantes */
+$app->get('/userslist', function (Request $request, Response $response) use ($entityManager){
+	
+	try{
+		$repository = $entityManager->getRepository(Vuser::class);
+		$users = $repository->findBy(array(), array('name' => 'ASC'));
+		$arrayUsers = Vuser::toArray($users);
+		$data["status"] = null;
+		$data["users"] = $arrayUsers;
+		
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}catch (Exception $e){
+		
+		$data["status"] = 'error';
+		$data['message'] = $e;
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
 });
 
 
