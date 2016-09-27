@@ -1,7 +1,7 @@
 <?php
 
 header('Content-Type: application/json');
-
+header('Access-Control-Allow-Origin: <origin> | *');
 header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
@@ -83,7 +83,7 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 		
 		$event = $_GET['company'];
 		$repository = $entityManager->getRepository(Vuser::class);
-		$users = $repository->findBy(array('eventId' => $event), array('name' => 'ASC'));
+		$users = $repository->findBy(array('eventId' => $event, 'active' => 1), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;

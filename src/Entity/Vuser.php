@@ -31,6 +31,11 @@ class Vuser
     private $password;
 	
 	/**
+	 * @Column("active", type="integer", nullable=false)
+	 */
+	private $active;
+	
+	/**
 	 * @Column("event_id", type="integer", nullable=false)
 	 */
 	private $eventId;
