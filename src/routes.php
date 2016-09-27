@@ -80,7 +80,8 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
 
 
 
-/** listar os usuarios dados importantes */
+/** listar os usuarios dados importantes
+ aponta para a view*/
 $app->get('/userslist', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
@@ -88,7 +89,7 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 		$users = $repository->findBy(array(), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
-		$data["users"] = $arrayUsers;
+		$data["data"] = $arrayUsers;
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
