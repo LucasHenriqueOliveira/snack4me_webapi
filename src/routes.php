@@ -80,8 +80,12 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
 $app->get('/userslist', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
+		
+		$event = $_GET['company'];
+		
+		
 		$repository = $entityManager->getRepository(Vuser::class);
-		$users = $repository->findBy(array(), array('name' => 'ASC'));
+		$users = $repository->findBy(array('event_id' => $event), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
