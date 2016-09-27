@@ -82,10 +82,8 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 	try{
 		
 		$event = $_GET['company'];
-		
-		
 		$repository = $entityManager->getRepository(Vuser::class);
-		$users = $repository->findBy(array('event_id' => $event), array('name' => 'ASC'));
+		$users = $repository->findBy(array('eventId' => $event), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
