@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * @Entity
  * @Table(name="vuser")
+ * @readyOnly
  */
 
 class Vuser
