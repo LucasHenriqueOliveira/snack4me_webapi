@@ -62,7 +62,7 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
         $users = $repository->findBy(array(), array('userName' => 'ASC'));
 		$arrayUsers = User::toArray($users);
 		$data["status"] = null;
-		$data["users"] = $arrayUsers;
+		$data["response"] = $arrayUsers;
 		 
 		return $response->withStatus(200)
 						->withHeader("Content-Type", "application/json")
@@ -89,7 +89,7 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 		$users = $repository->findBy(array(), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
-		$data["data"] = $arrayUsers;
+		$data["response"] = $arrayUsers;
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
@@ -114,7 +114,7 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
 		$users = $repository->findBy(array("userId" => $id));
 		$arrayUsers = User::toArray($users);
 		$data["status"] = null;
-		$data["users"] = $arrayUsers;
+		$data["response"] = $arrayUsers;
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")

@@ -1,2 +1,13 @@
 .idea
-vendor
+node_modules/
+bower_components/
+plugins
+platforms
+*.swp
+*.swo
+*.log
+*.DS_Store
+.tmp
+vendor/
+.DS_Store
+src/.DS_Store
