@@ -1,5 +1,12 @@
 <?php
 
+header('Content-Type: application/json');
+
+header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -21,25 +28,13 @@ $c['errorHandler'] = function ($c) {
     return function ($request, $response, $exception) use ($c) {
         return $c['response']->withStatus(500)
             ->withHeader('Content-Type', 'text/html')
-            ->write('Something went wrong!');
+            ->write('Algo deu errado!');
     };
 };
 
 
 $app = new \Slim\App($c);
-
-
-# https://github.com/tuupola/cors-middleware
-$app->add(new \Tuupola\Middleware\Cors([
-    "methods" => ["GET", "POST", "PUT"],
-    "error" => function ($request, $response, $arguments) {
-        $data["status"] = "error";
-        $data["message"] = $arguments["message"];
-        return $response
-            ->withHeader("Content-Type", "application/json")
-            ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-    }
-]));
+ 
 
 
 
@@ -91,9 +86,9 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
 		
-		return $response->withStatus(200)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		echo json_encode($data);
+		
+		 
 	}catch (Exception $e){
 		
 		$data["status"] = 'error';
