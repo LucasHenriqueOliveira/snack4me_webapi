@@ -160,6 +160,24 @@ class Vuser
 		return $this;
 	}
 	
+	/**
+	 * @return mixed
+	 */
+	public function getActive()
+	{
+		return $this->active;
+	}
+	
+	/**
+	 * @param mixed $active
+	 * @return Vuser
+	 */
+	public function setActive($active)
+	{
+		$this->active = $active;
+		return $this;
+	}
+	
 	
 	/**
 	 * @param User $obj
@@ -172,8 +190,8 @@ class Vuser
 			$data['id']  = $o->getId();
 			$data['name']  = $o->getName();
 			$data['password']  = $o->getPassword();
-			$data['event']  = $o->getProfile();
-			$data['profile']  = $o->getEventId();
+			$data['profile']  = $o->getProfile();
+			$data['event']  = $o->getEventId();
 			$data['profile_id']  = $o->getProfileId();
 			 
 			$users[] = $data;
