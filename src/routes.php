@@ -130,13 +130,30 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
 
 
 /** adicionar usuarios  */
-$app->post('/users/incluir', function (Request $request, Response $response) use ($entityManager){
+$app->post(/**
+ * @param Request $request
+ * @param Response $response
+ * @return mixed
+ */
+	'/users/incluir', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
 		$repository = $entityManager->getRepository(User::class);
-		$data = $request->getParsedBody();
-		 
+		
+		$dataUser  = $_POST['postData'];
+		$user = new User();
+		$user->setUserName($dataUser['username'])
+			  ->setUserProfileId($dataUser['profileId'])
+			  ->setZoneDthActivation($dataUser['zone'])
+		      ->setUserDthActivation(new DateTime())
+		      ->setEventId($dataUser['company']);
+		
+		$entityManager->persist($user);
+		$entityManager->flush();
+		
+		
 		$data["status"] = null;
+		$data["error"] = false;
 		 
 		
 		return $response->withStatus(200)
@@ -145,6 +162,7 @@ $app->post('/users/incluir', function (Request $request, Response $response) use
 	}catch (Exception $e){
 		
 		$data["status"] = 'error';
+		$data["error"] = true;
 		$data['message'] = $e;
 		return $response->withStatus(500)
 			->withHeader("Content-Type", "application/json")

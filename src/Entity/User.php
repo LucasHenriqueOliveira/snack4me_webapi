@@ -39,7 +39,12 @@ class User
      * @Column("user_profile_id", type="integer", nullable=false)
      */
     private $userProfileId;
-
+	
+	/**
+	 * @Column("event_id", type="integer", nullable=false)
+	 */
+	private $eventId;
+	
     /**
      * @Column(name="user_login_default", type="boolean", nullable=false)
      */
@@ -367,14 +372,7 @@ class User
         return $this->zoneDthActivation;
     }
 
-    /**
-     * @param mixed $zoneDthActivation
-     */
-        public function setZoneDthActivation($zoneDthActivation)
-        {
-            $this->zoneDthActivation = $zoneDthActivation;
-        }
-
+    
     /**
      * @return mixed
      */
@@ -383,13 +381,7 @@ class User
         return $this->zoneDthDeactivation;
     }
 
-    /**
-     * @param mixed $zoneDthDeactivation
-     */
-    public function setZoneDthDeactivation($zoneDthDeactivation)
-    {
-        $this->zoneDthDeactivation = $zoneDthDeactivation;
-    }
+    
 
     /**
      * @return mixed
@@ -398,14 +390,56 @@ class User
     {
         return $this->zoneDthUpdate;
     }
+	
+	/**
+	 * @param mixed $zoneDthActivation
+	 * @return User
+	 */
+	public function setZoneDthActivation($zoneDthActivation)
+	{
+		$this->zoneDthActivation = $zoneDthActivation;
+		return $this;
+	}
+	
+	/**
+	 * @param mixed $zoneDthDeactivation
+	 * @return User
+	 */
+	public function setZoneDthDeactivation($zoneDthDeactivation)
+	{
+		$this->zoneDthDeactivation = $zoneDthDeactivation;
+		return $this;
+	}
+	
+	/**
+	 * @param mixed $zoneDthUpdate
+	 * @return User
+	 */
+	public function setZoneDthUpdate($zoneDthUpdate)
+	{
+		$this->zoneDthUpdate = $zoneDthUpdate;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getEventId()
+	{
+		return $this->eventId;
+	}
+	
+	/**
+	 * @param mixed $eventId
+	 * @return User
+	 */
+	public function setEventId($eventId)
+	{
+		$this->eventId = $eventId;
+		return $this;
+	}
 
-    /**
-     * @param mixed $zoneDthUpdate
-     */
-    public function setZoneDthUpdate($zoneDthUpdate)
-    {
-        $this->zoneDthUpdate = $zoneDthUpdate;
-    }
+    
 
 
     /**
@@ -432,6 +466,7 @@ class User
             $data['zoneDthActivation']  = $o->getZoneDthActivation();
             $data['zoneDthDeactivation']  = $o->getZoneDthDeactivation();
             $data['zoneDthUpdate']  = $o->getZoneDthUpdate();
+			$data['eventId'] = $o->getEventId();
  
           	$users[] = $data;
 			
