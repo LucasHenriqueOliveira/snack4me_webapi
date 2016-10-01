@@ -98,18 +98,26 @@ class User
     private $zoneDthUpdate;
 
 
-
-    public function __construct(\DateTime $userDthActivation, \DateTime $userDthDeactivation, \DateTime $userDthUpdate)
+	 
+	
+	
+    public function __construct( $userDthActivation = null,  $userDthDeactivation = null,  $userDthUpdate= null)
     {
-
-        $this->userDthActivation = $userDthActivation;
-        $this->zoneDthActivation = $userDthActivation->getTimeZone()->getName();
-
-        $this->userDthDeactivation = $userDthDeactivation;
-        $this->zoneDthDeactivation = $userDthDeactivation->getTimeZone()->getName();
-
-        $this->userDthUpdate = $userDthUpdate;
-        $this->zoneDthUpdate = $userDthUpdate->getTimeZone()->getName();
+	
+		if(!is_null($userDthActivation )) {
+			$this->userDthActivation = $userDthActivation;
+			$this->zoneDthActivation = $userDthActivation->getTimeZone()->getName();
+		}
+	
+		if(!is_null($userDthDeactivation )) {
+			$this->userDthDeactivation = $userDthDeactivation;
+			$this->zoneDthDeactivation = $userDthDeactivation->getTimeZone()->getName();
+		}
+	
+		if(!is_null($userDthUpdate )) {
+			$this->userDthUpdate = $userDthUpdate;
+			$this->zoneDthUpdate = $userDthUpdate->getTimeZone()->getName();
+		}
     }
 
 

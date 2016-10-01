@@ -130,22 +130,23 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
 
 
 /** adicionar usuarios  */
-$app->post(/**
+/**
  * @param Request $request
  * @param Response $response
  * @return mixed
  */
-	'/users/incluir', function (Request $request, Response $response) use ($entityManager){
+$app->post('/users/incluir', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
 		$repository = $entityManager->getRepository(User::class);
 		
-		$dataUser  = $_POST['postData'];
+		 $dataUser  = json_decode($_POST['data']);
+		 
 		$user = new User();
 		$user->setUserName($dataUser['username'])
 			  ->setUserProfileId($dataUser['profileId'])
 			  ->setZoneDthActivation($dataUser['zone'])
-		      ->setUserDthActivation(new DateTime())
+		      ->setUserDthActivation(new DateTime('now'))
 		      ->setEventId($dataUser['company']);
 		
 		$entityManager->persist($user);
