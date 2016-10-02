@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+#header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -135,27 +135,40 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
  * @param Response $response
  * @return mixed
  */
-$app->post('/users/incluir', function (Request $request, Response $response) use ($entityManager){
+$app->POST('/users/incluir', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
+		
 		$repository = $entityManager->getRepository(User::class);
 		
-		 $dataUser  = json_decode($_POST['data']);
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$username = $_POST['username'];
+		$profileID = $_POST['profileId'];
+		$company = $_POST['company'];
+		$zone = $_POST['zone'];
+		$dth = new DateTime('now', new DateTimeZone($zone));
 		 
 		$user = new User();
-		$user->setUserName($dataUser['username'])
-			  ->setUserProfileId($dataUser['profileId'])
-			  ->setZoneDthActivation($dataUser['zone'])
-		      ->setUserDthActivation(new DateTime('now'))
-		      ->setEventId($dataUser['company']);
+		 
+		$user->setUserName($username)
+			  ->setUserProfileId($profileID)
+			  ->setZoneDthActivation($zone)
+			  ->setUserPassword(123456)
+		      ->setUserDthActivation($dth)
+		      ->setEventId($company);
 		
-		$entityManager->persist($user);
-		$entityManager->flush();
-		
+		try{
+			$entityManager->persist($user);
+			$entityManager->flush();
+		}catch (Exception $e){
+			echo $e->getMessage();die;
+		}
+			
 		
 		$data["status"] = null;
 		$data["error"] = false;
-		 
+		
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
