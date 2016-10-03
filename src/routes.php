@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+#header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -81,7 +81,7 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 	
 	try{
 		
-		$event = $_GET['company'];
+		$event = 1;# $_GET['company'];
 		$repository = $entityManager->getRepository(Vuser::class);
 		$users = $repository->findBy(array('eventId' => $event, 'active' => 1), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
@@ -108,11 +108,13 @@ $app->get('/userslist', function (Request $request, Response $response) use ($en
 $app->get('/users/find/{id}', function (Request $request, Response $response, $id) use ($entityManager){
 	
 	try{
-		$repository = $entityManager->getRepository(User::class);
-		$users = $repository->findBy(array("userId" => $id));
-		$arrayUsers = User::toArray($users);
+		$event = 1;# $_GET['company'];
+		$repository = $entityManager->getRepository(Vuser::class);
+		$users = $repository->findBy(array('id' => $id));
+		$arrayUsers = Vuser::toArray($users);
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
+		
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
