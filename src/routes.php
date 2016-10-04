@@ -109,13 +109,12 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
 	
 	try{
 		$event = 1;# $_GET['company'];
-		$repository = $entityManager->getRepository(Vuser::class);
-		$users = $repository->findBy(array('id' => $id));
-		$arrayUsers = Vuser::toArray($users);
+		$repository = $entityManager->getRepository(User::class);
+		$users = $repository->findBy(array('userId' => $id));
+		$arrayUsers = User::toArray($users);
 		$data["status"] = null;
 		$data["response"] = $arrayUsers;
-		
-		
+		 	
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
 			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
@@ -137,7 +136,7 @@ $app->get('/users/find/{id}', function (Request $request, Response $response, $i
  * @param Response $response
  * @return mixed
  */
-$app->POST('/users/incluir', function (Request $request, Response $response) use ($entityManager){
+$app->post('/users/incluir', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
 		
@@ -150,6 +149,7 @@ $app->POST('/users/incluir', function (Request $request, Response $response) use
 		$company = $_POST['company'];
 		$zone = $_POST['zone'];
 		$dth = new DateTime('now', new DateTimeZone($zone));
+		$userActivationId = $_POST['userActivationId'];
 		 
 		$user = new User();
 		 
@@ -157,6 +157,7 @@ $app->POST('/users/incluir', function (Request $request, Response $response) use
 			  ->setUserProfileId($profileID)
 			  ->setZoneDthActivation($zone)
 			  ->setUserPassword(123456)
+			  ->setUserIdActivation($userActivationId)
 		      ->setUserDthActivation($dth)
 		      ->setEventId($company);
 		
@@ -192,12 +193,33 @@ $app->POST('/users/incluir', function (Request $request, Response $response) use
 $app->put('/users/editar/{id}', function (Request $request, Response $response,$id) use ($entityManager){
 	
 	try{
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$username =  $_POST['username'];
+		$profileID = $_POST['profileId'];
+		$zone = $_POST['zone'];
+		$dth = new DateTime('now', new DateTimeZone($zone));
+	 	
 		$repository = $entityManager->getRepository(User::class);
-		$users = $repository->findBy(array("userId" => $id));
-		#$arrayUsers = User::toArray($users);
-		$data = $request->getParsedBody();
+		$user = $repository->findBy(array("userId" => $id));
+		 
+		$user  = $user[0];
+		 
+		
+		$user->setUserName($username)
+			->setUserProfileId($profileID)
+			->setZoneDthUpdate($zone)
+			->setUserDthUpdate($dth);
+		 try{
+		 	$entityManager->flush();
+		}catch (Exception $e){
+			echo $e->getMessage();die;
+		}
+		
 		$data["status"] = null;
-	#	$data["users"] = $arrayUsers;
+		$data["error"] = false;
+		 
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
@@ -214,19 +236,36 @@ $app->put('/users/editar/{id}', function (Request $request, Response $response,$
 });
 
 
-$app->delete('/users/remover/{id}', function (Request $request, Response $response,$id) use ($entityManager){
+$app->post('/users/remover', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
+	 	$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$id = $_POST['id'];
+		$userDesactivationId = $_POST['userDesactivationId'];
+		$zone = $_POST['zone'];
+		$dth = new DateTime('now', new DateTimeZone($zone));
+		
+		 
 		$repository = $entityManager->getRepository(User::class);
 		$users = $repository->findBy(array("userId" => $id));
+		$users = $users[0];
 		$users->setUserActive(0);
-		$users->setUserIdDeactivation(1); #ver onde está armazenado o dado
-		$users->setZoneDthDeactivation('America/Sao_Paulo'); #temporário, mudar para retorno da funcao js
-		$users->setUserDthDeactivation(new DateTime('now'));
- 		
-		$entityManager->flush();
+		$users->setUserIdDeactivation($userDesactivationId); #ver onde está armazenado o dado
+		$users->setZoneDthDeactivation($zone);
+		$users->setUserDthDeactivation($dth);
+		 
+		
+		try{
+			 
+			$entityManager->flush();
+		}catch (Exception $e){
+			echo $e->getMessage();die;
+		}
 		
 		$data["status"] = null;
+		$data["error"] = false;
+		
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
