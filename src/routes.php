@@ -77,7 +77,7 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
 
 /** listar os usuarios dados importantes
  aponta para a view*/
-$app->get('/userslist', function (Request $request, Response $response) use ($entityManager){
+$app->get('/userslist/{d}', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
 		
