@@ -49,6 +49,9 @@ $app->get('/', function (Request $request, Response $response) {
 });
 
 
+
+//***********************************************Users*****************************************************
+
 /** listar os usuarios  */
 $app->get('/users', function (Request $request, Response $response) use ($entityManager){
 
@@ -156,7 +159,7 @@ $app->post('/users/incluir', function (Request $request, Response $response) use
 		$user->setUserName($username)
 			  ->setUserProfileId($profileID)
 			  ->setZoneDthActivation($zone)
-			  ->setUserPassword(123456)
+			  ->setUserPassword(SHA1(123456))
 			  ->setUserIdActivation($userActivationId)
 		      ->setUserDthActivation($dth)
 		      ->setEventId($company);
@@ -283,6 +286,62 @@ $app->post('/users/remover', function (Request $request, Response $response) use
 
 
 
+//***********************************************Fim Users*****************************************************
 
+
+//***********************************************Login*****************************************************
+
+
+/** listar os usuarios dados importantes
+aponta para a login de usuario*/
+$app->get('/login/{d}', function (Request $request, Response $response) use ($entityManager){
+	
+	try{
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$user = filter_var($_POST["email"], FILTER_SANITIZE_STRING);
+		$password = filter_var($_POST["password"], FILTER_SANITIZE_MAGIC_QUOTES);
+		
+		 
+		$repository = $entityManager->getRepository(Vuser::class);
+		$users = $repository->findBy(array('name' => $user, 'active' => 1, 'password' => sha1($password)));
+		$arrayUsers = Vuser::toArray($users);
+		$data["status"] = null;
+		
+		$data["response"] = $arrayUsers;
+		 
+		if (empty($arrayUsers)){
+			$token = base64_encode($_POST["email"]);
+			$arrayUsers[0]["token"] = $token;
+			
+			$data["error"] = false;
+			$data["response"] = $data;
+			
+		} else {
+			
+			// Nenhum registro foi encontrado => o usuário é inválido
+			$data["error"] = true;
+			$data["message"] = "Usuário não encontrado.";
+		}
+		
+		
+		 return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}catch (Exception $e){
+		
+		$data["status"] = 'error';
+		$data['message'] = $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
+
+
+
+//***********************************************Fim Login*****************************************************
 
 $app->run();

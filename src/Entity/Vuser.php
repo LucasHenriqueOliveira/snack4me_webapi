@@ -36,6 +36,12 @@ class Vuser
 	private $active;
 	
 	/**
+	 * @Column("login_default", type="integer", nullable=false)
+	 */
+	private $loginDefault;
+	
+	
+	/**
 	 * @Column("event_id", type="integer", nullable=false)
 	 */
 	private $eventId;
@@ -178,6 +184,22 @@ class Vuser
 		return $this;
 	}
 	
+	/**
+	 * @return mixed
+	 */
+	public function getLoginDefault()
+	{
+		return $this->loginDefault;
+	}
+	
+	/**
+	 * @param mixed $loginDefault
+	 */
+	public function setLoginDefault($loginDefault)
+	{
+		$this->loginDefault = $loginDefault;
+	}
+	
 	
 	/**
 	 * @param User $obj
@@ -193,7 +215,8 @@ class Vuser
 			$data['profile']  = $o->getProfile();
 			$data['event']  = $o->getEventId();
 			$data['profile_id']  = $o->getProfileId();
-			 
+			$data['login_default']  = $o->getLoginDefault();
+			  
 			$users[] = $data;
 			
 		}
