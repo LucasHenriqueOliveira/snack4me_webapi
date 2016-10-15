@@ -385,7 +385,7 @@ class Product
 	 */
 	public function getProductHourInitial()
 	{
-		return $this->productHourInitial;
+		return $this->productHourInitial->format('H:i');
 	}
 	
 	/**
@@ -403,7 +403,7 @@ class Product
 	 */
 	public function getProductHourFinal()
 	{
-		return $this->productHourFinal;
+		return $this->productHourFinal->format('H:i');
 	}
 	
 	/**
@@ -681,6 +681,7 @@ class Product
 			$data['product_desc_es']  = $o->getProductDescEs();
 			$data['product_active']  = $o->getProductActive();
 			$data['product_hour_initial']  = $o->getProductHourInitial();
+			$data['product_hour_final']  = $o->getProductHourFinal();
 			$data['product_fast']  = $o->getProductFast();
 			$data['product_update_date']  = $o->getProductUpdateDate();
 			$data['product_category_id']  = $o->getProductCategoryId();
