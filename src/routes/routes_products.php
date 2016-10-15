@@ -11,7 +11,7 @@ use \App\Entity\TypeProduct;
 
 
 /** listar os Produtos  */
-$app->get('/products', function (Request $request, Response $response) use ($entityManager){
+$app->get('/products/{d}', function (Request $request, Response $response) use ($entityManager){
 	date_default_timezone_set('America/Sao_Paulo');
 	try{
 		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
