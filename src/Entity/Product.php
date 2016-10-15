@@ -669,29 +669,29 @@ class Product
 	{
 		$datas = array();
 		foreach ($obj as $o){
-			$data['productId']  = $o->getProductId();
-			$data['productNumber']  = $o->getProductNumber();
-			$data['productNamePt']  = $o->getProductNamePt();
-			$data['productNameEn']  = $o->getProductNameEn();
-			$data['productNameEs']  = $o->getProductNameEs();
-			$data['productPrice']  = $o->getProductPrice();
-			$data['productImage']  = $o->getProductImage();
-			$data['productDescPt']  = $o->getProductDescPt();
-			$data['productDescEn']  = $o->getProductDescEn();
-			$data['productDescEs']  = $o->getProductDescEs();
-			$data['productActive']  = $o->getProductActive();
-			$data['productHourInitial']  = $o->getProductHourInitial();
-			$data['productFast']  = $o->getProductFast();
-			$data['productUpdateDate']  = $o->getProductUpdateDate();
-			$data['productCategoryId']  = $o->getProductCategoryId();
-			$data['productEventId']  = $o->getProductEventId();
-			$data['productInventoryQtd']  = $o->getProductInventoryQtd();
-			$data['productInventoryCurrent']  = $o->getProductInventoryCurrent();
-			$data['productInventoryMaximum']  = $o->getProductInventoryMaximum();
-			$data['productInventoryMinimum'] = $o->getProductInventoryMinimum();
-			$data['productComplement'] = $o->getProductComplement();
-			$data['productHourTimezone'] = $o->getProductHourTimezone();
-			$data['typeProduct'] = null;
+			$data['product_id']  = $o->getProductId();
+			$data['product_number']  = $o->getProductNumber();
+			$data['product_name_pt']  = $o->getProductNamePt();
+			$data['product_name_en']  = $o->getProductNameEn();
+			$data['product_name_es']  = $o->getProductNameEs();
+			$data['product_price']  = $o->getProductPrice();
+			$data['product_image']  = $o->getProductImage();
+			$data['product_desc_pt']  = $o->getProductDescPt();
+			$data['product_desc_en']  = $o->getProductDescEn();
+			$data['product_desc_es']  = $o->getProductDescEs();
+			$data['product_active']  = $o->getProductActive();
+			$data['product_hour_initial']  = $o->getProductHourInitial();
+			$data['product_fast']  = $o->getProductFast();
+			$data['product_update_date']  = $o->getProductUpdateDate();
+			$data['product_category_id']  = $o->getProductCategoryId();
+			$data['product_event_id']  = $o->getProductEventId();
+			$data['product_inventory_qtd']  = $o->getProductInventoryQtd();
+			$data['product_inventory_current']  = $o->getProductInventoryCurrent();
+			$data['product_inventory_maximum']  = $o->getProductInventoryMaximum();
+			$data['product_inventory_minimum'] = $o->getProductInventoryMinimum();
+			$data['product_complement'] = $o->getProductComplement();
+			$data['produc_hour_timezone'] = $o->getProductHourTimezone();
+			$data['type_product'] = null;
 			
 			$datas[] = $data;
 			

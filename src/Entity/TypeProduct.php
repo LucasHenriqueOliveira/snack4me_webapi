@@ -183,12 +183,12 @@ class TypeProduct
 	{
 		$datas = array();
 		foreach ($obj as $o){
-			$data['typeProductId']  = $o->getTypeProductId();
-			$data['typeProductNamePt']  = $o->getTypeProductNamePt();
-			$data['typeProductNameEn']  = $o->getTypeProductNameEn();
-			$data['typeProductNameEs']  = $o->getTypeProductNameEs();
-			$data['typeProductProductId']  = $o->getTypeProductProductId();
-			$data['typeProductActive']  = $o->getTypeProductActive();
+			$data['type_product_id']  = $o->getTypeProductId();
+			$data['type_product_name_pt']  = $o->getTypeProductNamePt();
+			$data['type_product_name_en']  = $o->getTypeProductNameEn();
+			$data['type_product_name_es']  = $o->getTypeProductNameEs();
+			$data['type_product_product_id']  = $o->getTypeProductProductId();
+			$data['type_product_active']  = $o->getTypeProductActive();
 			 
 			
 			$datas[] = $data;

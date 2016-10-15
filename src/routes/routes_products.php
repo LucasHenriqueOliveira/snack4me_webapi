@@ -21,10 +21,10 @@ $app->get('/products', function (Request $request, Response $response) use ($ent
 		$arrayProducts = Product::toArray($products);
 		$data = array();
 		foreach ($arrayProducts as $prod){
-			if($prod['productComplement'] == 1) {
+			if($prod['product_complement'] == 1) {
 				$repository = $entityManager->getRepository(TypeProduct::class);
 				$typeProducts = $repository->findBy(array("typeProductActive" => 1, "typeProductProductId" => $prod['productId']));
-				$prod['typeProduct'] = TypeProduct::toArray($typeProducts);
+				$prod['type_product'] = TypeProduct::toArray($typeProducts);
 			}
 			array_push($data,$prod);
 		}
