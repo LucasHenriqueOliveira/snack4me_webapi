@@ -1,60 +1,18 @@
 <?php
 
-header('Content-Type: application/json');
-
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-
+ 
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \App\Entity\User;
 use \App\Entity\Vuser;
 
-$configuration = [
-    'settings' => [
-        'displayErrorDetails' => true,
-    ],
-];
-
-
-$entityManager = getEntityManager();
-
-$c = new \Slim\Container($configuration);
-
-$c['errorHandler'] = function ($c) {
-    return function ($request, $response, $exception) use ($c) {
-        return $c['response']->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Algo deu errado!');
-    };
-};
-
-
-$app = new \Slim\App($c);
- 
-
-
-
-$app->get('/', function (Request $request, Response $response) {
-
-    #$response->getBody()->write("URL Incompleta");
-    $data = "URL Incompleta";
-    
-    return $response
-        ->withHeader("Content-Type", "application/json")
-        ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-});
-
-
-
+  
 //***********************************************Users*****************************************************
 
 /** listar os usuarios  */
 $app->get('/users', function (Request $request, Response $response) use ($entityManager){
-
+	
     try{
         $repository = $entityManager->getRepository(User::class);
         $users = $repository->findBy(array(), array('userName' => 'ASC'));
@@ -84,7 +42,7 @@ $app->get('/userslist/{d}', function (Request $request, Response $response) use 
 	
 	try{
 		
-		$event = 1;# $_GET['company'];
+		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
 		$repository = $entityManager->getRepository(Vuser::class);
 		$users = $repository->findBy(array('eventId' => $event, 'active' => 1), array('name' => 'ASC'));
 		$arrayUsers = Vuser::toArray($users);
@@ -111,7 +69,7 @@ $app->get('/userslist/{d}', function (Request $request, Response $response) use 
 $app->get('/users/find/{id}', function (Request $request, Response $response, $id) use ($entityManager){
 	
 	try{
-		$event = 1;# $_GET['company'];
+		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
 		$repository = $entityManager->getRepository(User::class);
 		$users = $repository->findBy(array('userId' => $id));
 		$arrayUsers = User::toArray($users);
@@ -143,16 +101,16 @@ $app->post('/users/incluir', function (Request $request, Response $response) use
 	
 	try{
 		
-		$repository = $entityManager->getRepository(User::class);
+		#$repository = $entityManager->getRepository(User::class);
 		
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		
-		$username = $_POST['username'];
-		$profileID = $_POST['profileId'];
-		$company = $_POST['company'];
-		$zone = $_POST['zone'];
+		$username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+		$profileID = filter_var($_POST['profileId'], FILTER_SANITIZE_STRING);
+		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
+		$zone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
 		$dth = new DateTime('now', new DateTimeZone($zone));
-		$userActivationId = $_POST['userActivationId'];
+		$userActivationId = filter_var($_POST['userActivationId'], FILTER_SANITIZE_STRING);
 		 
 		$user = new User();
 		 
@@ -199,9 +157,9 @@ $app->put('/users/editar/{id}', function (Request $request, Response $response,$
 		
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		
-		$username =  $_POST['username'];
-		$profileID = $_POST['profileId'];
-		$zone = $_POST['zone'];
+		$username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+		$profileID = filter_var($_POST['profileId'], FILTER_SANITIZE_STRING);
+		$zone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
 		$dth = new DateTime('now', new DateTimeZone($zone));
 	 	
 		$repository = $entityManager->getRepository(User::class);
@@ -244,9 +202,9 @@ $app->post('/users/remover', function (Request $request, Response $response) use
 	try{
 	 	$_POST = json_decode(file_get_contents('php://input'), true);
 		
-		$id = $_POST['id'];
-		$userDesactivationId = $_POST['userDesactivationId'];
-		$zone = $_POST['zone'];
+		$id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
+		$userDesactivationId = filter_var($_POST["userDesactivationId"], FILTER_SANITIZE_STRING);
+		$zone = filter_var($_POST["zone"], FILTER_SANITIZE_STRING);
 		$dth = new DateTime('now', new DateTimeZone($zone));
 		
 		 
@@ -287,56 +245,3 @@ $app->post('/users/remover', function (Request $request, Response $response) use
 
 
 //***********************************************Fim Users*****************************************************
-
-
-//***********************************************Login*****************************************************
-
-
-/** listar os usuarios dados importantes
-aponta para a login de usuario*/
-$app->post('/login', function (Request $request, Response $response) use ($entityManager){
-	
-	try{
-		
-		$_POST = json_decode(file_get_contents('php://input'), true);
-		 
-		$user = filter_var($_POST["email"], FILTER_SANITIZE_STRING);
-		$password = filter_var($_POST["password"], FILTER_SANITIZE_MAGIC_QUOTES);
-		$repository = $entityManager->getRepository(Vuser::class);
-		$users = $repository->findBy(array('name' => $user, 'active' => 1, 'password' => sha1($password)));
-		$arrayUsers = Vuser::toArray($users);
-		
-		$data = array();
-		$data["error"] = true;
-		
-		 
-		 if (!empty($arrayUsers)){
-			 $arrayUsers[0]["token"] = base64_encode($user);
-			 $data["response"] = $arrayUsers[0];
-		   	 $data["error"] = false;
-			 
-		} else {
-			
-			// Nenhum registro foi encontrado => o usuário é inválido
-			$data["message"] = "Usuário e/ou Senha inválidos.";
-		}
-		
-		
-		 return $response->withStatus(200)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	}catch (Exception $e){
-		
-		$data['message'] = $e->getMessage();
-		return $response->withStatus(500)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	}
-	
-});
-
-
-
-//***********************************************Fim Login*****************************************************
-
-$app->run();

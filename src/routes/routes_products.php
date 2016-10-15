@@ -1,0 +1,49 @@
+<?php
+
+
+
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
+
+use \App\Entity\Product;
+use \App\Entity\TypeProduct;
+
+
+/** listar os Produtos  */
+$app->get('/products', function (Request $request, Response $response) use ($entityManager){
+	date_default_timezone_set('America/Sao_Paulo');
+	try{
+		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
+		$repository = $entityManager->getRepository(Product::class);
+		
+		$products = $repository->findBy(array("productActive" => 1, "productEventId" => $event  ), array('productNumber' => 'ASC'));
+		$arrayProducts = Product::toArray($products);
+		$data = array();
+		foreach ($arrayProducts as $prod){
+			if($prod['productComplement'] == 1) {
+				$repository = $entityManager->getRepository(TypeProduct::class);
+				$typeProducts = $repository->findBy(array("typeProductActive" => 1, "typeProductProductId" => $prod['productId']));
+				$prod['typeProduct'] = TypeProduct::toArray($typeProducts);
+			}
+			array_push($data,$prod);
+		}
+		
+		
+		$data["status"] = null;
+		$data["response"] = $arrayProducts;
+		
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}catch (Exception $e){
+		
+		$data["status"] = 'error';
+		$data['message'] = $e;
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
+

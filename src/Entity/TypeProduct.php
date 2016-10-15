@@ -2,57 +2,44 @@
 
 
 
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
- * TypeProduct
- *
- * @ORM\Table(name="type_product")
- * @ORM\Entity
+ * @Entity
+ * @Table(name="type_product")
  */
 class TypeProduct
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type_product_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+	/**
+	 * @Id
+	 * @Column(name="type_product_id", type="integer", nullable=false)
+	 * @GeneratedValue(strategy="AUTO")
+	 */
     private $typeProductId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type_product_name_pt", type="string", length=100, nullable=true)
+     * @Column(name="type_product_name_pt", type="string", length=100, nullable=true)
      */
     private $typeProductNamePt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type_product_name_en", type="string", length=100, nullable=true)
+     * @Column(name="type_product_name_en", type="string", length=100, nullable=true)
      */
     private $typeProductNameEn;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="type_product_name_es", type="string", length=100, nullable=true)
+     * @Column(name="type_product_name_es", type="string", length=100, nullable=true)
      */
     private $typeProductNameEs;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="type_product_product_id", type="integer", nullable=true)
+     * @Column(name="type_product_product_id", type="integer", nullable=true)
      */
     private $typeProductProductId;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="type_product_active", type="boolean", nullable=true)
+     * @Column(name="type_product_active", type="boolean", nullable=true)
      */
     private $typeProductActive = '1';
 
@@ -186,4 +173,29 @@ class TypeProduct
     {
         return $this->typeProductActive;
     }
+	
+	
+	/**
+	 * @param TypeProduct $obj
+	 * @return mixed
+	 */
+	public static function toArray(Array $obj)
+	{
+		$datas = array();
+		foreach ($obj as $o){
+			$data['typeProductId']  = $o->getTypeProductId();
+			$data['typeProductNamePt']  = $o->getTypeProductNamePt();
+			$data['typeProductNameEn']  = $o->getTypeProductNameEn();
+			$data['typeProductNameEs']  = $o->getTypeProductNameEs();
+			$data['typeProductProductId']  = $o->getTypeProductProductId();
+			$data['typeProductActive']  = $o->getTypeProductActive();
+			 
+			
+			$datas[] = $data;
+			
+		}
+		
+		return  $datas;
+	}
+	
 }

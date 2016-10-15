@@ -1,173 +1,134 @@
 <?php
 
-
-
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
- * Product
- *
- * @ORM\Table(name="product")
- * @ORM\Entity
+ * @Entity
+ * @Table(name="product")
  */
 class Product
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+	/**
+	 * @Id
+	 * @Column(name="product_id", type="integer", nullable=false)
+	 * @GeneratedValue(strategy="AUTO")
+	 */
     private $productId;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="product_number", type="string", length=30, nullable=false)
-     */
+	
+	/**
+	 * @Column(name="product_number", type="string", length=30, nullable=false)
+	 */
     private $productNumber;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="product_name_pt", type="string", length=100, nullable=false)
-     */
+	
+	/**
+	 * @Column(name="product_name_pt", type="string", length=100, nullable=false)
+	 */
     private $productNamePt;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="product_name_en", type="string", length=100, nullable=false)
-     */
+	
+	/**
+	 * @Column(name="product_name_en", type="string", length=100, nullable=false)
+	 */
     private $productNameEn;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="product_name_es", type="string", length=100, nullable=false)
-     */
+	
+	/**
+	 * @Column(name="product_name_es", type="string", length=100, nullable=false)
+	 */
     private $productNameEs;
-
+	 
     /**
-     * @var string
      *
-     * @ORM\Column(name="product_price", type="decimal", precision=10, scale=2, nullable=false)
+     * @Column(name="product_price", type="decimal", precision=10, scale=2, nullable=false)
      */
     private $productPrice;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="product_image", type="string", length=45, nullable=true)
+     * @Column(name="product_image", type="string", length=45, nullable=true)
      */
     private $productImage;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="product_desc_pt", type="text", length=65535, nullable=false)
+     * @Column(name="product_desc_pt", type="text", length=65535, nullable=false)
      */
     private $productDescPt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="product_desc_en", type="text", length=65535, nullable=false)
+     * @Column(name="product_desc_en", type="text", length=65535, nullable=false)
      */
     private $productDescEn;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="product_desc_es", type="text", length=65535, nullable=false)
+     * @Column(name="product_desc_es", type="text", length=65535, nullable=false)
      */
     private $productDescEs;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="product_active", type="boolean", nullable=false)
+	 * @Column(name="product_active", type="boolean", nullable=false)
      */
     private $productActive = '1';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="product_hour_initial", type="time", nullable=false)
+     * @Column(name="product_hour_initial", type="time", nullable=false)
      */
     private $productHourInitial;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="product_hour_final", type="time", nullable=false)
+     * @Column(name="product_hour_final", type="time", nullable=false)
      */
     private $productHourFinal;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="product_fast", type="boolean", nullable=false)
+     * @Column(name="product_fast", type="boolean", nullable=false)
      */
     private $productFast = '0';
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="product_update_date", type="datetime", nullable=false)
+     * @Column(name="product_update_date", type="datetime", nullable=false)
      */
     private $productUpdateDate;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_category_id", type="integer", nullable=true)
+     * @Column(name="product_category_id", type="integer", nullable=true)
      */
     private $productCategoryId;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_event_id", type="integer", nullable=false)
+     * @Column(name="product_event_id", type="integer", nullable=false)
      */
     private $productEventId;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_inventory_qtd", type="integer", nullable=false)
+     * @Column(name="product_inventory_qtd", type="integer", nullable=false)
      */
     private $productInventoryQtd;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_inventory_current", type="integer", nullable=false)
+     * @Column(name="product_inventory_current", type="integer", nullable=false)
      */
     private $productInventoryCurrent;
 
     /**
-     * @var integer
      *
-     * @ORM\Column(name="product_inventory_maximum", type="integer", nullable=false)
+     * @Column(name="product_inventory_maximum", type="integer", nullable=false)
      */
     private $productInventoryMaximum;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="product_inventory_minimum", type="integer", nullable=false)
+     * @Column(name="product_inventory_minimum", type="integer", nullable=false)
      */
     private $productInventoryMinimum;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="product_complement", type="boolean", nullable=false)
+     * @Column(name="product_complement", type="boolean", nullable=false)
      */
     private $productComplement = '0';
-
+	
+	/**
+	 * @Column(name="product_hour_timezone", type="string", length=50, nullable=false)
+	 */
+	private $productHourTimezone;
+	
+	 
 
     /**
      * Get productId
@@ -418,54 +379,46 @@ class Product
     {
         return $this->productActive;
     }
+	
+	/**
+	 * @return mixed
+	 */
+	public function getProductHourInitial()
+	{
+		return $this->productHourInitial;
+	}
+	
+	/**
+	 * @param mixed $productHourInitial
+	 * @return Product
+	 */
+	public function setProductHourInitial($productHourInitial)
+	{
+		$this->productHourInitial = $productHourInitial;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getProductHourFinal()
+	{
+		return $this->productHourFinal;
+	}
+	
+	/**
+	 * @param mixed $productHourFinal
+	 * @return Product
+	 */
+	public function setProductHourFinal($productHourFinal)
+	{
+		$this->productHourFinal = $productHourFinal;
+		return $this;
+	}
 
-    /**
-     * Set productHourInitial
-     *
-     * @param \DateTime $productHourInitial
-     *
-     * @return Product
-     */
-    public function setProductHourInitial($productHourInitial)
-    {
-        $this->productHourInitial = $productHourInitial;
+   
 
-        return $this;
-    }
-
-    /**
-     * Get productHourInitial
-     *
-     * @return \DateTime
-     */
-    public function getProductHourInitial()
-    {
-        return $this->productHourInitial;
-    }
-
-    /**
-     * Set productHourFinal
-     *
-     * @param \DateTime $productHourFinal
-     *
-     * @return Product
-     */
-    public function setProductHourFinal($productHourFinal)
-    {
-        $this->productHourFinal = $productHourFinal;
-
-        return $this;
-    }
-
-    /**
-     * Get productHourFinal
-     *
-     * @return \DateTime
-     */
-    public function getProductHourFinal()
-    {
-        return $this->productHourFinal;
-    }
+    
 
     /**
      * Set productFast
@@ -512,7 +465,13 @@ class Product
      */
     public function getProductUpdateDate()
     {
-        return $this->productUpdateDate;
+	
+		$productUpdateDate = null;
+		if(!is_null($this->productHourTimezone )){
+			$productUpdateDate = $this->productUpdateDate->setTimeZone(new \DateTimeZone($this->productHourTimezone))->format('d-m-Y H:i:s');
+		}
+		return $productUpdateDate;
+		 
     }
 
     /**
@@ -682,4 +641,65 @@ class Product
     {
         return $this->productComplement;
     }
+	
+	/**
+	 * @return mixed
+	 */
+	public function getProductHourTimezone()
+	{
+		return $this->productHourTimezone;
+	}
+	
+	/**
+	 * @param mixed $productHourTimezone
+	 * @return Product
+	 */
+	public function setProductHourTimezone($productHourTimezone)
+	{
+		$this->productHourTimezone = $productHourTimezone;
+		return $this;
+	}
+	
+	
+	/**
+	 * @param Product $obj
+	 * @return mixed
+	 */
+	public static function toArray(Array $obj)
+	{
+		$datas = array();
+		foreach ($obj as $o){
+			$data['productId']  = $o->getProductId();
+			$data['productNumber']  = $o->getProductNumber();
+			$data['productNamePt']  = $o->getProductNamePt();
+			$data['productNameEn']  = $o->getProductNameEn();
+			$data['productNameEs']  = $o->getProductNameEs();
+			$data['productPrice']  = $o->getProductPrice();
+			$data['productImage']  = $o->getProductImage();
+			$data['productDescPt']  = $o->getProductDescPt();
+			$data['productDescEn']  = $o->getProductDescEn();
+			$data['productDescEs']  = $o->getProductDescEs();
+			$data['productActive']  = $o->getProductActive();
+			$data['productHourInitial']  = $o->getProductHourInitial();
+			$data['productFast']  = $o->getProductFast();
+			$data['productUpdateDate']  = $o->getProductUpdateDate();
+			$data['productCategoryId']  = $o->getProductCategoryId();
+			$data['productEventId']  = $o->getProductEventId();
+			$data['productInventoryQtd']  = $o->getProductInventoryQtd();
+			$data['productInventoryCurrent']  = $o->getProductInventoryCurrent();
+			$data['productInventoryMaximum']  = $o->getProductInventoryMaximum();
+			$data['productInventoryMinimum'] = $o->getProductInventoryMinimum();
+			$data['productComplement'] = $o->getProductComplement();
+			$data['productHourTimezone'] = $o->getProductHourTimezone();
+			$data['typeProduct'] = null;
+			
+			$datas[] = $data;
+			
+		}
+		
+		return  $datas;
+	}
+	
+	
+	
 }
