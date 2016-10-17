@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+#header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -57,6 +57,8 @@ require_once __DIR__ . "/routes/routes_user.php";
 require_once __DIR__ . "/routes/routes_login.php";
 //***********************************************PRODUCTSS*****************************************************
 require_once __DIR__ . "/routes/routes_products.php";
+//***********************************************Category*****************************************************
+require_once __DIR__ . "/routes/routes_category.php";
 
 
 $app->run();
