@@ -13,7 +13,7 @@ $app->get('/categories/{d}', function (Request $request, Response $response) use
 		
 		#$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
 		$repository = $entityManager->getRepository(Category::class);
-		$categories = $repository->findAll(array('categoryNamePt' => 'ASC'));
+		$categories = $repository->findBy(array(),array('categoryNamePt' => 'ASC'));
 		$arrayCategories = Category::toArray($categories);
 		$data["status"] = null;
 		$data["error"] = false;
