@@ -112,6 +112,17 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$qtd_complemento = filter_var($_POST['qtd_complemento'], FILTER_SANITIZE_STRING);
 		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
 		$hour_timezone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
+		 
+		
+		
+		createDirectory(getcwd(). "../../events/$company");
+		createDirectory(getcwd(). "../../events/$company/products");
+		createDirectory(getcwd(). "../../events/$company/products/full");
+		createDirectory(getcwd(). "../../events/$company/products/thumb");
+		
+		$imagenFull = save_base64_image($_POST['imageFull'], $company . '_' . $numero . '_full' ,getcwd(). "../../events/$company/" );
+		
+		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
 		$fast = $fast > 0 ? 1 : 0;
