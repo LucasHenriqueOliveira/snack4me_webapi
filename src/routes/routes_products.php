@@ -9,6 +9,7 @@ use \App\Entity\Product;
 use \App\Entity\TypeProduct;
 
 
+
 /** listar os Produtos  */
 $app->get('/products/{d}', function (Request $request, Response $response) use ($entityManager) {
 	date_default_timezone_set('America/Sao_Paulo');
