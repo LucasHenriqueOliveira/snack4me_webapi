@@ -9,11 +9,11 @@ use \App\Entity\Product;
 use \App\Entity\TypeProduct;
 use \App\TratarImagem;
 
-date_default_timezone_set('America/Sao_Paulo');
+
 
 /** listar os Produtos  */
 $app->get('/products/{d}', function (Request $request, Response $response) use ($entityManager) {
-	
+	date_default_timezone_set('America/Sao_Paulo');
 	try {
 		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
 		$repository = $entityManager->getRepository(Product::class);
