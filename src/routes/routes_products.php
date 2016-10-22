@@ -117,22 +117,18 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$full = $_POST['imageFull'];
 		$thumb = $_POST['imageThumbnails'];
 		
+		$im = new TratarImagem();
+		$im->createDirectory("../../events/$company");
+		$im->createDirectory("../../events/$company/products");
+		$im->createDirectory("../../events/$company/products/originals");
+		$im->createDirectory("../../events/$company/products/full");
+		$im->createDirectory("../../events/$company/products/thumb");
 		
-		try{
-			$im = new TratarImagem();
-			$im->createDirectory("../../events/$company");
-			$im->createDirectory("../../events/$company/products");
-			$im->createDirectory("../../events/$company/products/originals");
-			$im->createDirectory("../../events/$company/products/full");
-			$im->createDirectory("../../events/$company/products/thumb");
-			
-			$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
-				,"../../events/$company/products/originals/" );
-			$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
-				,"../../events/$company/products/originals/" );
-		}catch(Exception $e){
-			echo $e->getMessage();
-		}
+		$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
+			,"../../events/$company/products/originals/" );
+		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
+			,"../../events/$company/products/originals/" );
+		
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
@@ -204,7 +200,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$data["status"] = 'error';
 		$data["error"] = true;
 		$data['message'] = "Erro ao incluir produto. " . $e->getMessage();
-		 
+		
 		throw $e;
 		return $response->withStatus(500)
 			->withHeader("Content-Type", "application/json")
