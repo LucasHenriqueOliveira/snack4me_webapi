@@ -9,11 +9,11 @@ use \App\Entity\Product;
 use \App\Entity\TypeProduct;
 use \App\TratarImagem;
 
-
+date_default_timezone_set('America/Sao_Paulo');
 
 /** listar os Produtos  */
 $app->get('/products/{d}', function (Request $request, Response $response) use ($entityManager) {
-	date_default_timezone_set('America/Sao_Paulo');
+	
 	try {
 		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
 		$repository = $entityManager->getRepository(Product::class);
@@ -127,9 +127,9 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 			$im->createDirectory("../../events/$company/products/thumb");
 			
 			$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
-				,"../../events/$company/products/originals" );
+				,"../../events/$company/products/originals/" );
 			$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
-				,"../../events/$company/products/originals" );
+				,"../../events/$company/products/originals/" );
 		}catch(Exception $e){
 			echo $e->getMessage();
 		}
