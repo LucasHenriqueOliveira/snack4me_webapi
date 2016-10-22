@@ -128,7 +128,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 			
 			$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
 				,"../../events/$company/products/originals" );
-			$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_full'
+			$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
 				,"../../events/$company/products/originals" );
 		}catch(Exception $e){
 			echo $e->getMessage();
