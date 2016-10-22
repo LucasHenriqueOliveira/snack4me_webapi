@@ -7,6 +7,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 use \App\Entity\Product;
 use \App\Entity\TypeProduct;
+use \App\TratarImagem;
 
 
 
@@ -113,16 +114,25 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$qtd_complemento = filter_var($_POST['qtd_complemento'], FILTER_SANITIZE_STRING);
 		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
 		$hour_timezone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
-		 
+		$full = $_POST['imageFull'];
+		$thumb = $_POST['imageThumbnails'];
 		
 		
-		createDirectory(getcwd(). "../../events/$company");
-		createDirectory(getcwd(). "../../events/$company/products");
-		createDirectory(getcwd(). "../../events/$company/products/full");
-		createDirectory(getcwd(). "../../events/$company/products/thumb");
-		
-		$imagenFull = save_base64_image($_POST['imageFull'], $company . '_' . $numero . '_full' ,getcwd(). "../../events/$company/" );
-		
+		try{
+			$im = new TratarImagem();
+			$im->createDirectory("../../events/$company");
+			$im->createDirectory("../../events/$company/products");
+			$im->createDirectory("../../events/$company/products/originals");
+			$im->createDirectory("../../events/$company/products/full");
+			$im->createDirectory("../../events/$company/products/thumb");
+			
+			$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
+				,"../../events/$company/products/originals" );
+			$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_full'
+				,"../../events/$company/products/originals" );
+		}catch(Exception $e){
+			echo $e->getMessage();
+		}
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
