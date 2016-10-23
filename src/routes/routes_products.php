@@ -101,8 +101,10 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		
 		$numero = filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
 		$categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_STRING);
-		$hora_fim = filter_var($_POST['hora_fim'], FILTER_SANITIZE_STRING) . ':00';
-		$hora_inicio = filter_var($_POST['hora_inicio'], FILTER_SANITIZE_STRING) . ':00';
+		
+		$hora_fim = new DateTime('1970-01-01 ' . $_POST['hora_fim'] . ':00', new DateTimeZone('America/Sao_Paulo'));
+		$hora_inicio = new DateTime('1970-01-01 ' . $_POST['hora_inicio'] . ':00' , new DateTimeZone('America/Sao_Paulo'));
+		
 		$price = filter_var($_POST['price'], FILTER_SANITIZE_STRING);
 		$nome_en = filter_var($_POST['nome_en'], FILTER_SANITIZE_STRING);
 		$nome_es = filter_var($_POST['nome_es'], FILTER_SANITIZE_STRING);
@@ -142,8 +144,9 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 			$product = new Product();
 			$product->setProductNumber($numero)
 				->setProductCategoryId($categoria)
-				->setProductHourFinal($hora_inicio)
-				->setProductHourFinal($hora_fim)
+				->setProductHourInitial($hora_inicio->format('H:i'))
+				->setProductHourFinal($hora_fim->format('H:i'))
+				->setProductUpdateDate( new DateTime('now', new DateTimeZone($hour_timezone)))
 				->setProductPrice($price)
 				->setProductNameEn($nome_en)
 				->setProductNameEs($nome_es)
