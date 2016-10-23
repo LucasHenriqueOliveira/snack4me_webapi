@@ -1,65 +1,64 @@
 <?php
 
 
-
-use Doctrine\ORM\Mapping as ORM;
+namespace App\Entity;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
- * City
- *
- * @ORM\Table(name="city")
- * @ORM\Entity
+ * @Entity
+ * @Table(name="city")
  */
 class City
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="city_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    
+	/**
+	 * @Id
+	 * @Column(name="city_id", type="integer", nullable=false)
+	 * @GeneratedValue(strategy="AUTO")
+	 */
     private $cityId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="city_name", type="string", length=100, nullable=false)
+     * @Column(name="city_name", type="string", length=100, nullable=false)
      */
     private $cityName;
+	
+	/**
+	 * @return mixed
+	 */
+	public function getCityId()
+	{
+		return $this->cityId;
+	}
+	
+	/**
+	 * @param mixed $cityId
+	 * @return City
+	 */
+	public function setCityId($cityId)
+	{
+		$this->cityId = $cityId;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getCityName()
+	{
+		return $this->cityName;
+	}
+	
+	/**
+	 * @param mixed $cityName
+	 * @return City
+	 */
+	public function setCityName($cityName)
+	{
+		$this->cityName = $cityName;
+		return $this;
+	}
 
 
-    /**
-     * Get cityId
-     *
-     * @return integer
-     */
-    public function getCityId()
-    {
-        return $this->cityId;
-    }
-
-    /**
-     * Set cityName
-     *
-     * @param string $cityName
-     *
-     * @return City
-     */
-    public function setCityName($cityName)
-    {
-        $this->cityName = $cityName;
-
-        return $this;
-    }
-
-    /**
-     * Get cityName
-     *
-     * @return string
-     */
-    public function getCityName()
-    {
-        return $this->cityName;
-    }
+    
 }

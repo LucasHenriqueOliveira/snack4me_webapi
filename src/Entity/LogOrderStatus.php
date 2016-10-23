@@ -1,158 +1,132 @@
 <?php
 
 
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
- * LogOrderStatus
- *
- * @ORM\Table(name="log_order_status")
- * @ORM\Entity
+ * @Entity
+ * @Table(name="log_order_status")
  */
 class LogOrderStatus
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="log_order_status_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+	
+	/**
+	 * @Id
+	 * @Column(name="log_order_status_id", type="integer", nullable=false)
+	 * @GeneratedValue(strategy="AUTO")
+	 */
+	
+	
     private $logOrderStatusId;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="order_id", type="integer", nullable=true)
+	 * @Column(name="order_id", type="integer", nullable=true)
      */
     private $orderId;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="order_event_id", type="integer", nullable=true)
+     * @Column(name="order_event_id", type="integer", nullable=true)
      */
     private $orderEventId;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="order_status_id", type="integer", nullable=true)
+     * @Column(name="order_status_id", type="integer", nullable=true)
      */
     private $orderStatusId;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="log_order_status_date", type="datetime", nullable=true)
+     * @Column(name="log_order_status_date", type="datetime", nullable=true)
      */
     private $logOrderStatusDate;
+	
+	/**
+	 * @return mixed
+	 */
+	public function getLogOrderStatusId()
+	{
+		return $this->logOrderStatusId;
+	}
+	
+	/**
+	 * @param mixed $logOrderStatusId
+	 * @return LogOrderStatus
+	 */
+	public function setLogOrderStatusId($logOrderStatusId)
+	{
+		$this->logOrderStatusId = $logOrderStatusId;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getOrderId()
+	{
+		return $this->orderId;
+	}
+	
+	/**
+	 * @param mixed $orderId
+	 * @return LogOrderStatus
+	 */
+	public function setOrderId($orderId)
+	{
+		$this->orderId = $orderId;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getOrderEventId()
+	{
+		return $this->orderEventId;
+	}
+	
+	/**
+	 * @param mixed $orderEventId
+	 * @return LogOrderStatus
+	 */
+	public function setOrderEventId($orderEventId)
+	{
+		$this->orderEventId = $orderEventId;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getOrderStatusId()
+	{
+		return $this->orderStatusId;
+	}
+	
+	/**
+	 * @param mixed $orderStatusId
+	 * @return LogOrderStatus
+	 */
+	public function setOrderStatusId($orderStatusId)
+	{
+		$this->orderStatusId = $orderStatusId;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getLogOrderStatusDate()
+	{
+		return $this->logOrderStatusDate;
+	}
+	
+	/**
+	 * @param mixed $logOrderStatusDate
+	 * @return LogOrderStatus
+	 */
+	public function setLogOrderStatusDate($logOrderStatusDate)
+	{
+		$this->logOrderStatusDate = $logOrderStatusDate;
+		return $this;
+	}
 
-
-    /**
-     * Get logOrderStatusId
-     *
-     * @return integer
-     */
-    public function getLogOrderStatusId()
-    {
-        return $this->logOrderStatusId;
-    }
-
-    /**
-     * Set orderId
-     *
-     * @param integer $orderId
-     *
-     * @return LogOrderStatus
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderId
-     *
-     * @return integer
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
-
-    /**
-     * Set orderEventId
-     *
-     * @param integer $orderEventId
-     *
-     * @return LogOrderStatus
-     */
-    public function setOrderEventId($orderEventId)
-    {
-        $this->orderEventId = $orderEventId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderEventId
-     *
-     * @return integer
-     */
-    public function getOrderEventId()
-    {
-        return $this->orderEventId;
-    }
-
-    /**
-     * Set orderStatusId
-     *
-     * @param integer $orderStatusId
-     *
-     * @return LogOrderStatus
-     */
-    public function setOrderStatusId($orderStatusId)
-    {
-        $this->orderStatusId = $orderStatusId;
-
-        return $this;
-    }
-
-    /**
-     * Get orderStatusId
-     *
-     * @return integer
-     */
-    public function getOrderStatusId()
-    {
-        return $this->orderStatusId;
-    }
-
-    /**
-     * Set logOrderStatusDate
-     *
-     * @param \DateTime $logOrderStatusDate
-     *
-     * @return LogOrderStatus
-     */
-    public function setLogOrderStatusDate($logOrderStatusDate)
-    {
-        $this->logOrderStatusDate = $logOrderStatusDate;
-
-        return $this;
-    }
-
-    /**
-     * Get logOrderStatusDate
-     *
-     * @return \DateTime
-     */
-    public function getLogOrderStatusDate()
-    {
-        return $this->logOrderStatusDate;
-    }
+	
+	
 }

@@ -8,9 +8,6 @@ use Doctrine\ORM\Mapping\Entity;
  * @Entity
  * @Table(name="order")
  */
-
-
-
 class Order
 {
 	/**
