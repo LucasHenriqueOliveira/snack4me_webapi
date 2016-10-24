@@ -6,9 +6,10 @@ use Doctrine\ORM\Mapping\Entity;
 
 /**
  * @Entity
- * @Table(name="order")
+ * @Table(name="vorder")
+ * @readyOnly
  */
-class Order
+class Vorder
 {
 	/**
 	 * @Id
