@@ -6,15 +6,19 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
  
 
-$app->get('/dashboard', function (Request $request, Response $response) use ($entityManager){
+$app->post('/dashboard', function (Request $request, Response $response) use ($entityManager){
 
 
 	
 	try{
-		 
-		$event = filter_var($_GET['company'], FILTER_SANITIZE_STRING);
-		$zone = filter_var($_GET['zone'], FILTER_SANITIZE_STRING);
 		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		
+		$event = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
+		$zone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
+		
+		 
 	  	$qb = $entityManager->createQueryBuilder();
 	 	$qb->select('count (u)')
 			->from('\App\Entity\Vuser', 'u')
