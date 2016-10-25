@@ -3,6 +3,9 @@
 namespace App;
 
 
+use \App\ImageCache as ImageCache;
+ 
+
 class TratarImagem
 {
 	
@@ -43,6 +46,23 @@ class TratarImagem
 			return false;
 		}
 		return true;
+	}
+	
+	
+	/**
+	 * @param $pastaOriginal
+	 * @param $image
+	 * @param $nomePastaSalvar
+	 * @@var  recebe o local atual do arquivo e onde deve salvar o arquivo após a compactacao
+	 */
+	public function salvaFotosCompactadas($pastaOriginal, $image, $nomePastaSalvar){
+		
+		
+		$imagecache = new ImageCache();
+		$imagecache->cached_image_directory = $pastaOriginal.$nomePastaSalvar;
+		$imagecache->cache($pastaOriginal . '/originals/'.$image);
+		$imagecache->check_link_cached = false;
+		return $imagecache->cached_filename;
 	}
 	
 }

@@ -90,12 +90,18 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$im->createDirectory("../../events/$company/products/full");
 		$im->createDirectory("../../events/$company/products/thumb");
 		
+	 
+		$pastaOriginal = "../../events/$company/products/originals/";
+		
 		$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
-			,"../../events/$company/products/originals/" );
+			,$pastaOriginal );
 		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
-			,"../../events/$company/products/originals/" );
+			,$pastaOriginal );
 		
 		
+		$nomeFinalArquivo = $im->salvaFotosCompactadas("../../events/$company/products/",$imagenFull, 'full');
+		$nomeFinalArquivo = $im->salvaFotosCompactadas("../../events/$company/products/",$imagenThumb, 'thumb');
+		 	
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
 		$fast = $fast > 0 ? 1 : 0;
@@ -122,6 +128,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 				->setProductEventId($company)
 				->setProductComplement($complement)
 				->setProductHourTimezone($hour_timezone)
+				->setProductImage($nomeFinalArquivo)
 				->setProductInventoryCurrent(250)
 				->setProductInventoryMaximum(300)
 				->setProductInventoryMinimum(10)
