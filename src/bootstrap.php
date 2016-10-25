@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json');
 
-header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+#header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -23,29 +23,17 @@ $entityManager = getEntityManager();
 
 $c = new \Slim\Container($configuration);
 
-$c['errorHandler'] = function ($c) {
-    return function ($request, $response, $exception) use ($c) {
-        return $c['response']->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
-            ->write('Algo deu errado!');
-    };
-};
-
+ 
+$c['settings']['displayErrorDetails'] = true;
 
 $app = new \Slim\App($c);
- 
 
 
-
-$app->get('/', function (Request $request, Response $response) {
-
-    #$response->getBody()->write("URL Incompleta");
-    $data = "URL Incompleta";
-    
-    return $response
-        ->withHeader("Content-Type", "application/json")
-        ->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+$app->get('/', function (Request $req,  Response $res, $args = []) {
+	return $res->withStatus(400)->write('Bad Request');
 });
+
+ 
 
  
 

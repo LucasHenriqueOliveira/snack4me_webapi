@@ -4,10 +4,12 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-
 use \App\Entity\Product;
 use \App\Entity\TypeProduct;
 use \App\TratarImagem;
+
+
+//***********************************************prod*****************************************************
 
 
 
@@ -48,47 +50,6 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 	
 });
 
-/** remover Produtos  */
-$app->post('/products/remover', function (Request $request, Response $response) use ($entityManager) {
-	
-	try {
-		$_POST = json_decode(file_get_contents('php://input'), true);
-		
-		$id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
-		
-		$repository = $entityManager->getRepository(Product::class);
-		$products = $repository->findBy(array("productId" => $id));
-		$product = $products[0];
-		$product->setProductActive(0);
-		
-		
-		try {
-			
-			$entityManager->flush();
-		} catch (Exception $e) {
-			echo $e->getMessage();
-			die;
-		}
-		
-		$data["status"] = null;
-		$data["error"] = false;
-		$data["error"] = false;
-		$data["message"] = "Produto removido com sucesso";
-		
-		return $response->withStatus(200)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	} catch (Exception $e) {
-		
-		$data["status"] = 'error';
-		$data["error"] = true;
-		$data['message'] = "Erro ao remover. " . $e->getMessage();
-		return $response->withStatus(500)
-			->withHeader("Content-Type", "application/json")
-			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	}
-	
-});
 
 
 /** add Produtos  */
@@ -99,20 +60,21 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		
 		
-		$numero = filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
+		$numero =    filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
 		$categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_STRING);
 		
-		$hora_fim = new DateTime('1970-01-01 ' . $_POST['hora_fim'] . ':00', new DateTimeZone('America/Sao_Paulo'));
-		$hora_inicio = new DateTime('1970-01-01 ' . $_POST['hora_inicio'] . ':00' , new DateTimeZone('America/Sao_Paulo'));
 		
-		$price = filter_var($_POST['price'], FILTER_SANITIZE_STRING);
+		$hora_fim = new DateTime('1970-01-01 ' . filter_var($_POST['hora_fim'] . ':00', FILTER_SANITIZE_STRING), new DateTimeZone('America/Sao_Paulo'));
+		$hora_inicio = new DateTime('1970-01-01 ' . filter_var($_POST['hora_inicio'] . ':00', FILTER_SANITIZE_STRING) , new DateTimeZone('America/Sao_Paulo'));
+		
+		$price =   filter_var($_POST['price'], FILTER_SANITIZE_STRING);
 		$nome_en = filter_var($_POST['nome_en'], FILTER_SANITIZE_STRING);
 		$nome_es = filter_var($_POST['nome_es'], FILTER_SANITIZE_STRING);
 		$nome_pt = filter_var($_POST['nome_pt'], FILTER_SANITIZE_STRING);
 		$desc_es = filter_var($_POST['desc_es'], FILTER_SANITIZE_STRING);
 		$desc_en = filter_var($_POST['desc_en'], FILTER_SANITIZE_STRING);
 		$desc_pt = filter_var($_POST['desc_pt'], FILTER_SANITIZE_STRING);
-		$fast = filter_var($_POST['fast'], FILTER_SANITIZE_STRING);
+		$fast =    filter_var($_POST['fast'], FILTER_SANITIZE_STRING);
 		$qtd_complemento = filter_var($_POST['qtd_complemento'], FILTER_SANITIZE_STRING);
 		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
 		$hour_timezone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
@@ -120,6 +82,8 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$thumb = $_POST['imageThumbnails'];
 		
 		$im = new TratarImagem();
+		
+		$im->createDirectory("../../events");
 		$im->createDirectory("../../events/$company");
 		$im->createDirectory("../../events/$company/products");
 		$im->createDirectory("../../events/$company/products/originals");
@@ -136,16 +100,16 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$complement = $qtd_complemento > 0 ? 1 : 0;
 		$fast = $fast > 0 ? 1 : 0;
 		
+		$entityManager->getConnection()->beginTransaction(); // suspend auto-commit
 		
 		if ($numero != "" && $numero > 0) {
 			
-			$entityManager->getConnection()->beginTransaction(); // suspend auto-commit
 			
 			$product = new Product();
 			$product->setProductNumber($numero)
 				->setProductCategoryId($categoria)
-				->setProductHourInitial($hora_inicio->format('H:i'))
-				->setProductHourFinal($hora_fim->format('H:i'))
+				->setProductHourInitial($hora_inicio)
+				->setProductHourFinal($hora_fim)
 				->setProductUpdateDate( new DateTime('now', new DateTimeZone($hour_timezone)))
 				->setProductPrice($price)
 				->setProductNameEn($nome_en)
@@ -162,7 +126,6 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 				->setProductInventoryMaximum(300)
 				->setProductInventoryMinimum(10)
 				->setProductInventoryQtd(250);
-			
 			
 			$entityManager->persist($product);
 			$entityManager->flush();
@@ -211,3 +174,64 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 	}
 	
 });
+
+
+/** remover Produtos  */
+$app->post('/products/remover', function (Request $request, Response $response) use ($entityManager) {
+	
+	try {
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$id = filter_var($_POST["id"], FILTER_SANITIZE_STRING);
+		
+		$repository = $entityManager->getRepository(Product::class);
+		$products = $repository->findBy(array("productId" => $id));
+		$product = $products[0];
+		$product->setProductActive(0);
+		
+		
+		try {
+			
+			$entityManager->flush();
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			die;
+		}
+		
+		$data["status"] = null;
+		$data["error"] = false;
+		$data["error"] = false;
+		$data["message"] = "Produto removido com sucesso";
+		
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	} catch (Exception $e) {
+		
+		$data["status"] = 'error';
+		$data["error"] = true;
+		$data['message'] = "Erro ao remover. " . $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+//***********************************************Fim prod*****************************************************
+ 
+
+
+

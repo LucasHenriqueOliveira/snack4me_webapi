@@ -34,6 +34,7 @@ $app->get('/users', function (Request $request, Response $response) use ($entity
 
 });
 
+ 
 
 
 /** listar os usuarios dados importantes
