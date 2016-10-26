@@ -98,10 +98,12 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
 			,$pastaOriginal );
 		
+		$nomeFinalArquivo = $company.'_'.$numero.'_'.$nome_pt. '.jpeg';
 		
-		$nomeFinalArquivo = $im->salvaFotosCompactadas("../../events/$company/products/",$imagenFull, 'full');
-		$nomeFinalArquivo = $im->salvaFotosCompactadas("../../events/$company/products/",$imagenThumb, 'thumb');
-		 	
+		
+		$im->salvaFotosCompactadas("../../events/$company/products/",$imagenFull, 'full', $nomeFinalArquivo);
+		$im->salvaFotosCompactadas("../../events/$company/products/",$imagenThumb, 'thumb', $nomeFinalArquivo);
+		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
 		$fast = $fast > 0 ? 1 : 0;

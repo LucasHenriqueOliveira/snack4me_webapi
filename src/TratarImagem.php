@@ -55,14 +55,15 @@ class TratarImagem
 	 * @param $nomePastaSalvar
 	 * @@var  recebe o local atual do arquivo e onde deve salvar o arquivo após a compactacao
 	 */
-	public function salvaFotosCompactadas($pastaOriginal, $image, $nomePastaSalvar){
+	public function salvaFotosCompactadas($pastaRaiz, $image, $nomePastaSalvar,$nomeArquivo){
 		
 		
 		$imagecache = new ImageCache();
-		$imagecache->cached_image_directory = $pastaOriginal.$nomePastaSalvar;
-		$imagecache->cache($pastaOriginal . '/originals/'.$image);
+		$imagecache->cached_image_directory = $pastaRaiz.$nomePastaSalvar;
+		$imagecache->cache($pastaRaiz . '/originals/'.$image);
 		$imagecache->check_link_cached = false;
-		return $imagecache->cached_filename;
+		
+		rename($imagecache->cached_filename,$pastaRaiz.$nomePastaSalvar . '/'.$nomeArquivo);
 	}
 	
 }
