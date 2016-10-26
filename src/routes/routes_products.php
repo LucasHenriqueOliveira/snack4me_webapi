@@ -98,7 +98,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
 			,$pastaOriginal );
 		
-		$nomeFinalArquivo = $company.'_'.$numero.'_'.$nome_pt. '.jpeg';
+		$nomeFinalArquivo = $company.'_'.$numero.'_'.preg_replace("/\s+/","_",$nome_pt). '.jpeg';
 		
 		
 		$im->salvaFotosCompactadas("../../events/$company/products/",$imagenFull, 'full', $nomeFinalArquivo);
