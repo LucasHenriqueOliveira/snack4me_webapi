@@ -429,7 +429,7 @@ class ImageCache {
     private function error($status = null) {
         if (is_null($status))
             $status = 'Unknown Error:';
-        exit($status);
+        #exit($status);
     }
 
 }

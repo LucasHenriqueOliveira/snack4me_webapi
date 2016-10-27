@@ -83,26 +83,26 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		
 		$im = new TratarImagem();
 		
-		$im->createDirectory("../../events");
-		$im->createDirectory("../../events/$company");
-		$im->createDirectory("../../events/$company/products");
-		$im->createDirectory("../../events/$company/products/originals");
-		$im->createDirectory("../../events/$company/products/full");
-		$im->createDirectory("../../events/$company/products/thumb");
+		$im->createDirectory("../../imagesMenu");
+		$im->createDirectory("../../imagesMenu/$company");
+		$im->createDirectory("../../imagesMenu/$company/products");
+		$im->createDirectory("../../imagesMenu/$company/products/originals");
+		$im->createDirectory("../../imagesMenu/$company/products/full");
+		$im->createDirectory("../../imagesMenu/$company/products/thumb");
 		
 	 
-		$pastaOriginal = "../../events/$company/products/originals/";
+		$pastaOriginal = "../../imagesMenu/$company/products/originals/";
 		
 		$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
 			,$pastaOriginal );
 		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
 			,$pastaOriginal );
 		
-		$nomeFinalArquivo = $company.'_'.$numero.'_'.preg_replace("/\s+/","_",$nome_pt). '.jpeg';
+		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
 		
 		
-		$im->salvaFotosCompactadas("../../events/$company/products/",$imagenFull, 'full', $nomeFinalArquivo);
-		$im->salvaFotosCompactadas("../../events/$company/products/",$imagenThumb, 'thumb', $nomeFinalArquivo);
+		$im->salvaFotosCompactadas("../../imagesMenu/$company/products/",$imagenFull, 'full', $nomeFinalArquivo);
+		$im->salvaFotosCompactadas("../../imagesMenu/$company/products/",$imagenThumb, 'thumb', $nomeFinalArquivo);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
