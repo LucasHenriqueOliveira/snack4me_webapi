@@ -87,17 +87,18 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$im->confimarPastas($company);
 		 
 		$pastaRaiz = "../../events/$company/products/";
+		$pastaOriginal =  "../../events/$company/products/originals/";
 		
 		$imagemFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
-			,$pastaRaiz . 'originals/' );
+			,$pastaOriginal);
 		$imagemThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
-			,$pastaRaiz . 'originals/' );
+			,$pastaOriginal );
 		
 		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
 		
 		
-		$im->compressImage($pastaRaiz.$imagemFull,$pastaRaiz."full/$nomeFinalArquivo", 85);
-		$im->compressImage($pastaRaiz.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",8);
+		$im->compressImage($pastaOriginal.$imagemFull,$pastaRaiz."full/$nomeFinalArquivo", 85);
+		$im->compressImage($pastaOriginal.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",8);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
