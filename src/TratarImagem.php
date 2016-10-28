@@ -2,10 +2,7 @@
 
 namespace App;
 
-
-use \App\ImageCache as ImageCache;
-use MongoDB\Driver\Exception\ExecutionTimeoutException;
-
+ 
 
 class TratarImagem
 {
@@ -65,13 +62,7 @@ class TratarImagem
 		return true;
 	}
 	
-	
-	/**
-	 * @param $pastaOriginal
-	 * @param $image
-	 * @param $nomePastaSalvar
-	 * @var  recebe o local atual do arquivo e onde deve salvar o arquivo após a compactacao
-	 */
+	 
 	public function compressImage($source_path, $destination_path, $quality){
 		
 		$info = getimagesize($source_path);
