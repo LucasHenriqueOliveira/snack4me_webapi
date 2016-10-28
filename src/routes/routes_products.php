@@ -98,7 +98,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		
 		
 		$im->compressImage($pastaOriginal.$imagemFull,$pastaRaiz."full/$nomeFinalArquivo", 85);
-		$im->compressImage($pastaOriginal.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",8);
+		$im->compressImage($pastaOriginal.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",85);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
