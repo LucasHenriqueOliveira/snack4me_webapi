@@ -96,8 +96,8 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
 		
 		
-		$im->salvaFotosCompactadas($pastaOriginal.$imagemFull,$pastaOriginal."full/$nomeFinalArquivo", 85);
-		$im->salvaFotosCompactadas($pastaOriginal.$imagemThumb,$pastaOriginal."thumb/$nomeFinalArquivo",8);
+		$im->compressImage($pastaOriginal.$imagemFull,$pastaOriginal."full/$nomeFinalArquivo", 85);
+		$im->compressImage($pastaOriginal.$imagemThumb,$pastaOriginal."thumb/$nomeFinalArquivo",8);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
