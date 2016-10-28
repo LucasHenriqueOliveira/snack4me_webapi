@@ -81,28 +81,23 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$full = $_POST['imageFull'];
 		$thumb = $_POST['imageThumbnails'];
 		
+		
+		
 		$im = new TratarImagem();
+		$im->confimarPastas($company);
+		 
+		$pastaOriginal = "../../events/$company/products/originals/";
 		
-		$im->createDirectory("../../imagesMenu");
-		$im->createDirectory("../../imagesMenu/$company");
-		$im->createDirectory("../../imagesMenu/$company/products");
-		$im->createDirectory("../../imagesMenu/$company/products/originals");
-		$im->createDirectory("../../imagesMenu/$company/products/full");
-		$im->createDirectory("../../imagesMenu/$company/products/thumb");
-		
-	 
-		$pastaOriginal = "../../imagesMenu/$company/products/originals/";
-		
-		$imagenFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
+		$imagemFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
 			,$pastaOriginal );
-		$imagenThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
+		$imagemThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
 			,$pastaOriginal );
 		
 		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
 		
 		
-		$im->salvaFotosCompactadas("../../imagesMenu/$company/products/",$imagenFull, 'full', $nomeFinalArquivo);
-		$im->salvaFotosCompactadas("../../imagesMenu/$company/products/",$imagenThumb, 'thumb', $nomeFinalArquivo);
+		$im->salvaFotosCompactadas($pastaOriginal.$imagemFull,$pastaOriginal."full/$nomeFinalArquivo", 85);
+		$im->salvaFotosCompactadas($pastaOriginal.$imagemThumb,$pastaOriginal."thumb/$nomeFinalArquivo",8);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;

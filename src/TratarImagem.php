@@ -4,7 +4,8 @@ namespace App;
 
 
 use \App\ImageCache as ImageCache;
- 
+use MongoDB\Driver\Exception\ExecutionTimeoutException;
+
 
 class TratarImagem
 {
@@ -34,6 +35,22 @@ class TratarImagem
 	}
 	
 	
+	public function confimarPastas($company){
+		
+		try {
+			$this->createDirectory("../../events");
+			$this->createDirectory("../../events/$company");
+			$this->createDirectory("../../events/$company/products");
+			$this->createDirectory("../../events/$company/products/originals");
+			$this->createDirectory("../../events/$company/products/full");
+			$this->createDirectory("../../events/$company/products/thumb");
+		}catch (Execution $e){
+			throw new Exeception("Erro ao criar pastas");
+			
+		}
+		
+	}
+	
 	public function createDirectory($path){
 		
 		if (is_dir($path)) {
@@ -55,15 +72,20 @@ class TratarImagem
 	 * @param $nomePastaSalvar
 	 * @var  recebe o local atual do arquivo e onde deve salvar o arquivo após a compactacao
 	 */
-	public function salvaFotosCompactadas($pastaRaiz, $image, $nomePastaSalvar,$nomeArquivo){
+	public function compressImage($source_path, $destination_path, $quality){
 		
+		$info = getimagesize($source_path);
+		$quality=85;
 		
-		$imagecache = new ImageCache();
-		$imagecache->cached_image_directory = $pastaRaiz.$nomePastaSalvar;
-		$imagecache->cache($pastaRaiz . 'originals/'.$image);
-		$imagecache->check_link_cached = false;
+		if ($info['mime'] == 'image/jpeg') {
+			$image = imagecreatefromjpeg($source_path);
+		} elseif ($info['mime'] == 'image/png') {
+			$quality = 8;
+			$image = imagecreatefrompng($source_path);
+		}
 		
-		rename($imagecache->cached_filename,$pastaRaiz.$nomePastaSalvar . '/'.$nomeArquivo);
+		imagejpeg($image, $destination_path, $quality);
+		return $destination_path;
 	}
 	
 }
