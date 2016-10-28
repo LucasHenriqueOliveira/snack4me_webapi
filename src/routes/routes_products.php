@@ -86,18 +86,18 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 		$im = new TratarImagem();
 		$im->confimarPastas($company);
 		 
-		$pastaOriginal = "../../events/$company/products/originals/";
+		$pastaRaiz = "../../events/$company/products/";
 		
 		$imagemFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
-			,$pastaOriginal );
+			,$pastaRaiz . 'originals/' );
 		$imagemThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
-			,$pastaOriginal );
+			,$pastaRaiz . 'originals/' );
 		
 		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
 		
 		
-		$im->compressImage($pastaOriginal.$imagemFull,$pastaOriginal."full/$nomeFinalArquivo", 85);
-		$im->compressImage($pastaOriginal.$imagemThumb,$pastaOriginal."thumb/$nomeFinalArquivo",8);
+		$im->compressImage($pastaRaiz.$imagemFull,$pastaRaiz."full/$nomeFinalArquivo", 85);
+		$im->compressImage($pastaRaiz.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",8);
 		
 		
 		$complement = $qtd_complemento > 0 ? 1 : 0;
