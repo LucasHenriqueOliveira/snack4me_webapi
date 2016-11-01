@@ -34,7 +34,7 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 		
 		
 		$data["status"] = null;
-		$data["response"] = $arrayProducts;
+		$data["response"] = $data;
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
