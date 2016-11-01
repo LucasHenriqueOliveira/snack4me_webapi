@@ -29,7 +29,9 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 				$typeProducts = $repository->findBy(array("typeProductActive" => 1, "typeProductProductId" => $prod['product_id']));
 				$prod['type_product'] = TypeProduct::toArray($typeProducts);
 			}
-			array_push($data, $prod);
+			
+			$data[] = $prod;
+			 
 		}
 		
 		
