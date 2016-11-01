@@ -23,6 +23,7 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 		$products = $repository->findBy(array("productActive" => 1, "productEventId" => $event), array('productNumber' => 'ASC'));
 		$arrayProducts = Product::toArray($products);
 		$data = array();
+		$produts =  array();
 		foreach ($arrayProducts as $prod) {
 			if ($prod['product_complement'] == 1) {
 				$repository = $entityManager->getRepository(TypeProduct::class);
@@ -30,13 +31,13 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 				$prod['type_product'] = TypeProduct::toArray($typeProducts);
 			}
 			
-			$data[] = $prod;
+			$produts[] = $prod;
 			 
 		}
 		
-		
+		$data["error"] = false;
 		$data["status"] = null;
-		$data["response"] = $data;
+		$data["response"] = $produts;
 		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
@@ -44,6 +45,7 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 	} catch (Exception $e) {
 		
 		$data["status"] = 'error';
+		$data["error"] = true;
 		$data['message'] = $e;
 		return $response->withStatus(500)
 			->withHeader("Content-Type", "application/json")
