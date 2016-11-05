@@ -185,6 +185,131 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 });
 
 
+
+/** update Produtos  */
+$app->post('/products/update', function (Request $request, Response $response) use ($entityManager) {
+	
+	try {
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$id =    filter_var($_POST['id'], FILTER_SANITIZE_STRING);
+		
+		$numero =    filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
+		$categoria = filter_var($_POST['categoria'], FILTER_SANITIZE_STRING);
+		
+		
+		$hora_fim = new DateTime('1970-01-01 ' . filter_var($_POST['hora_fim'] . ':00', FILTER_SANITIZE_STRING), new DateTimeZone('America/Sao_Paulo'));
+		$hora_inicio = new DateTime('1970-01-01 ' . filter_var($_POST['hora_inicio'] . ':00', FILTER_SANITIZE_STRING) , new DateTimeZone('America/Sao_Paulo'));
+		
+		$price =   filter_var($_POST['price'], FILTER_SANITIZE_STRING);
+		$nome_en = filter_var($_POST['nome_en'], FILTER_SANITIZE_STRING);
+		$nome_es = filter_var($_POST['nome_es'], FILTER_SANITIZE_STRING);
+		$nome_pt = filter_var($_POST['nome_pt'], FILTER_SANITIZE_STRING);
+		$desc_es = filter_var($_POST['desc_es'], FILTER_SANITIZE_STRING);
+		$desc_en = filter_var($_POST['desc_en'], FILTER_SANITIZE_STRING);
+		$desc_pt = filter_var($_POST['desc_pt'], FILTER_SANITIZE_STRING);
+		$fast =    filter_var($_POST['fast'], FILTER_SANITIZE_STRING);
+		$qtd_complemento = filter_var($_POST['qtd_complemento'], FILTER_SANITIZE_STRING);
+		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
+		$hour_timezone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
+		
+		$roles =    filter_var($_POST['roles_id'], FILTER_SANITIZE_STRING);
+		
+		$complement = $qtd_complemento > 0 ? 1 : 0;
+		$fast = $fast > 0 ? 1 : 0;
+		
+		$entityManager->getConnection()->beginTransaction(); // suspend auto-commit
+		
+		if ($numero != "" && $numero > 0) {
+			
+			$repository = $entityManager->getRepository(Product::class);
+			$product = $repository->findBy(array("productId" => $id));
+			
+			$product  = $product[0];
+			$product->setProductNumber($numero)
+				->setProductCategoryId($categoria)
+				->setProductHourInitial($hora_inicio)
+				->setProductHourFinal($hora_fim)
+				->setProductUpdateDate( new DateTime('now', new DateTimeZone($hour_timezone)))
+				->setProductPrice($price)
+				->setProductNameEn($nome_en)
+				->setProductNameEs($nome_es)
+				->setProductNamePt($nome_pt)
+				->setProductDescEn($desc_en)
+				->setProductDescEs($desc_es)
+				->setProductDescPt($desc_pt)
+				->setProductFast($fast)
+				->setProductEventId($company)
+				->setProductComplement($complement)
+				->setProductHourTimezone($hour_timezone);
+			
+			
+			if($roles){
+				$product->setProductInventoryCurrent(filter_var($_POST['inventory_current'], FILTER_SANITIZE_STRING))
+					->setProductInventoryMaximum(filter_var($_POST['inventory_maximum'], FILTER_SANITIZE_STRING))
+					->setProductInventoryMinimum(filter_var($_POST['inventory_minimum'], FILTER_SANITIZE_STRING))
+					->setProductInventoryQtd(filter_var($_POST['inventory_qtd'], FILTER_SANITIZE_STRING));
+			}
+			
+			$entityManager->flush();
+			
+			$repository = $entityManager->getRepository(TypeProduct::class);
+			$typeProducts = $repository->findBy(array("typeProductActive" => 1, "typeProductProductId" => $id));
+			
+			foreach ( $typeProducts as $typeProduct) {
+				
+				$typeProduct->setTypeProductActive(0);
+				$entityManager->flush();
+				
+			}
+			
+			
+			$typeProduct = new TypeProduct();
+			
+			for ($i = 0; $i < $qtd_complemento; $i++) {
+				$complemento_en = filter_var($_POST['complemento_en_' . $i], FILTER_SANITIZE_STRING);
+				$complemento_es = filter_var($_POST['complemento_es_' . $i], FILTER_SANITIZE_STRING);
+				$complemento_pt = filter_var($_POST['complemento_pt_' . $i], FILTER_SANITIZE_STRING);
+				
+				$typeProduct->setTypeProductNameEn($complemento_en)
+					->setTypeProductNameEs($complemento_es)
+					->setTypeProductNamePt($complemento_pt)
+					->setTypeProductProductId($id);
+				
+				$entityManager->persist($typeProduct);
+				$entityManager->flush();
+				
+			}
+			$entityManager->getConnection()->commit();
+			
+			
+		}
+		
+		
+		$data["status"] = null;
+		$data["error"] = false;
+		$data["message"] = "Produto atualiado com sucesso";
+		
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	} catch (Exception $e) {
+		
+		$entityManager->getConnection()->rollBack();
+		$data["status"] = 'error';
+		$data["error"] = true;
+		$data['message'] = "Erro ao atualizar produto. " . $e->getMessage();
+		
+		throw $e;
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
+
+
 /** remover Produtos  */
 $app->post('/products/remover', function (Request $request, Response $response) use ($entityManager) {
 	
