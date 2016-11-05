@@ -140,13 +140,14 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 			$entityManager->flush();
 			$id = $product->getProductId();
 			
-			$typeProduct = new TypeProduct();
+			
 			
 			for ($i = 0; $i < $qtd_complemento; $i++) {
 				$complemento_en = filter_var($_POST['complemento_en_' . $i], FILTER_SANITIZE_STRING);
 				$complemento_es = filter_var($_POST['complemento_es_' . $i], FILTER_SANITIZE_STRING);
 				$complemento_pt = filter_var($_POST['complemento_pt_' . $i], FILTER_SANITIZE_STRING);
 				
+				$typeProduct = new TypeProduct();
 				$typeProduct->setTypeProductNameEn($complemento_en)
 					->setTypeProductNameEs($complemento_es)
 					->setTypeProductNamePt($complemento_pt)
@@ -265,13 +266,14 @@ $app->post('/products/update', function (Request $request, Response $response) u
 			}
 			
 			
-			$typeProduct = new TypeProduct();
+			
 			
 			for ($i = 0; $i < $qtd_complemento; $i++) {
 				$complemento_en = filter_var($_POST['complemento_en_' . $i], FILTER_SANITIZE_STRING);
 				$complemento_es = filter_var($_POST['complemento_es_' . $i], FILTER_SANITIZE_STRING);
 				$complemento_pt = filter_var($_POST['complemento_pt_' . $i], FILTER_SANITIZE_STRING);
 				
+				$typeProduct = new TypeProduct();
 				$typeProduct->setTypeProductNameEn($complemento_en)
 					->setTypeProductNameEs($complemento_es)
 					->setTypeProductNamePt($complemento_pt)
