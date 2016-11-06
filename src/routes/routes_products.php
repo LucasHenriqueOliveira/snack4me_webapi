@@ -188,7 +188,7 @@ $app->post('/products/incluir', function (Request $request, Response $response) 
 
 
 /** update Produtos  */
-$app->post('/products/update', function (Request $request, Response $response) use ($entityManager) {
+$app->put('/products/update', function (Request $request, Response $response) use ($entityManager) {
 	
 	try {
 		
@@ -302,6 +302,78 @@ $app->post('/products/update', function (Request $request, Response $response) u
 		$data["status"] = 'error';
 		$data["error"] = true;
 		$data['message'] = "Erro ao atualizar produto. " . $e->getMessage();
+		
+		throw $e;
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
+
+/** update image Produtos  */
+$app->put('/products/updateimage', function (Request $request, Response $response) use ($entityManager) {
+	
+	try {
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$id =    filter_var($_POST['id'], FILTER_SANITIZE_STRING);
+		$company = filter_var($_POST['company'], FILTER_SANITIZE_STRING);
+		$hour_timezone = filter_var($_POST['zone'], FILTER_SANITIZE_STRING);
+		$full = $_POST['imageFull'];
+		$thumb = $_POST['imageThumbnails'];
+		$numero =    filter_var($_POST['numero'], FILTER_SANITIZE_STRING);
+		$nome_pt = filter_var($_POST['nome_pt'], FILTER_SANITIZE_STRING);
+		
+		
+		
+		
+		$im = new TratarImagem();
+		$im->confimarPastas($company);
+		
+		$pastaRaiz = "../../events/$company/products/";
+		$pastaOriginal =  "../../events/$company/products/originals/";
+		
+		$imagemFull = $im->save_base64_image($full, $company . '_' . $numero . '_full'
+			,$pastaOriginal);
+		$imagemThumb = $im->save_base64_image($thumb, $company . '_' . $numero . '_thumb'
+			,$pastaOriginal );
+		
+		$nomeFinalArquivo = $company.'_'.$numero.'_'. preg_replace("/\s+/","_",$nome_pt). '.jpg';
+		
+		
+		$im->compressImage($pastaOriginal.$imagemFull,$pastaRaiz."full/$nomeFinalArquivo", 85);
+		$im->compressImage($pastaOriginal.$imagemThumb,$pastaRaiz."thumb/$nomeFinalArquivo",85);
+		
+		$entityManager->getConnection()->beginTransaction(); // suspend auto-commit
+		
+		$repository = $entityManager->getRepository(Product::class);
+		$product = $repository->findBy(array("productId" => $id));
+		
+		$product  = $product[0];
+		$product->setProductUpdateDate( new DateTime('now', new DateTimeZone($hour_timezone)))
+				->setProductHourTimezone($hour_timezone)
+				->setProductImage($nomeFinalArquivo);
+		
+		$entityManager->flush();
+		$entityManager->getConnection()->commit();
+		
+		
+		
+		$data["status"] = null;
+		$data["error"] = false;
+		$data["message"] = "Imagem alterada com sucesso";
+		
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	} catch (Exception $e) {
+		
+		$entityManager->getConnection()->rollBack();
+		$data["status"] = 'error';
+		$data["error"] = true;
+		$data['message'] = "Erro ao alterar imagem do produto. " . $e->getMessage();
 		
 		throw $e;
 		return $response->withStatus(500)
