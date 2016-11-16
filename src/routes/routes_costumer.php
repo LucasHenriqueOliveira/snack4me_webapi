@@ -31,7 +31,7 @@ $app->get('/customer', function (Request $request, Response $response) use ($ent
 		
 		
 		$repository = $entityManager->getRepository(Customer::class);
-		$customer = $repository->findBy(array('customer_email' => $email, 'customer_password' => sha1($password)),array('customer_email' => 'DESC'), 1);
+		$customer = $repository->findBy(array('customerEmail' => $email, 'customerPassword' => sha1($password)),array('customerEmail' => 'DESC'), 1);
 		
 		echo count($customer);die;
 		
