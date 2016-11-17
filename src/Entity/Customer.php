@@ -89,6 +89,8 @@ class Customer
 	public function setCustomerId($customerId)
 	{
 		$this->customerId = $customerId;
+		return $this;
+		
 	}
 	
 	/**
@@ -105,6 +107,8 @@ class Customer
 	public function setCustomerName($customerName)
 	{
 		$this->customerName = $customerName;
+		return $this;
+		
 	}
 	
 	/**
@@ -121,6 +125,8 @@ class Customer
 	public function setCustomerEmail($customerEmail)
 	{
 		$this->customerEmail = $customerEmail;
+		return $this;
+		
 	}
 	
 	/**
@@ -137,6 +143,8 @@ class Customer
 	public function setCustomerPassword($customerPassword)
 	{
 		$this->customerPassword = $customerPassword;
+		return $this;
+		
 	}
 	
 	/**
@@ -153,6 +161,8 @@ class Customer
 	public function setCustomerToken($customerToken)
 	{
 		$this->customerToken = $customerToken;
+		return $this;
+		
 	}
 	
 	/**
@@ -169,6 +179,8 @@ class Customer
 	public function setCustomerDeviceId($customerDeviceId)
 	{
 		$this->customerDeviceId = $customerDeviceId;
+		return $this;
+		
 	}
 	
 	/**
@@ -185,6 +197,8 @@ class Customer
 	public function setCustomerRegistrationDate($customerRegistrationDate)
 	{
 		$this->customerRegistrationDate = $customerRegistrationDate;
+		return $this;
+		
 	}
 	
 	/**
@@ -201,6 +215,8 @@ class Customer
 	public function setCustomerSinValid($customerSinValid)
 	{
 		$this->customerSinValid = $customerSinValid;
+		return $this;
+		
 	}
 	
 	/**
@@ -217,6 +233,8 @@ class Customer
 	public function setCustomerValidDate($customerValidDate)
 	{
 		$this->customerValidDate = $customerValidDate;
+		return $this;
+		
 	}
 	
 	/**
@@ -233,6 +251,8 @@ class Customer
 	public function setCustomerPhone($customerPhone)
 	{
 		$this->customerPhone = $customerPhone;
+		return $this;
+		
 	}
 	
 	/**
@@ -249,6 +269,8 @@ class Customer
 	public function setCustomerType($customerType)
 	{
 		$this->customerType = $customerType;
+		return $this;
+		
 	}
 	
 	/**
@@ -265,6 +287,8 @@ class Customer
 	public function setCustomerUpdatePassword($customerUpdatePassword)
 	{
 		$this->customerUpdatePassword = $customerUpdatePassword;
+		return $this;
+		
 	}
 
 	

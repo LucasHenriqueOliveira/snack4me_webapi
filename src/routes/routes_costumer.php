@@ -1,3 +1,4 @@
+
 <?php
 
 
@@ -7,18 +8,21 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \App\Entity\Customer;
 
 
-$app->get('/customer', function (Request $request, Response $response) use ($entityManager){
+$app->post('/customer', function (Request $request, Response $response) use ($entityManager){
 	
 	try{
-		
-		$_POST = json_decode(file_get_contents('php://input'), true);
-		
-		$email = filter_var($_POST["email"], FILTER_SANITIZE_STRING);
-		$password = filter_var($_POST["password"], FILTER_SANITIZE_MAGIC_QUOTES);
 		
 		$data = array();
 		$isApp = false;
 		
+		$allPostPutVars = $request->getParsedBody();
+		foreach($allPostPutVars as $key => $param){
+			$_POST[$key] = $param;
+		}
+		
+		
+		$email = filter_var($_POST['email'], FILTER_SANITIZE_STRING);
+		$password = filter_var($_POST['password'], FILTER_SANITIZE_MAGIC_QUOTES);
 		
 		if(isset($_POST['uuid'])){
 			$uuid = filter_var($_POST['uuid'], FILTER_SANITIZE_MAGIC_QUOTES);
@@ -41,12 +45,9 @@ $app->get('/customer', function (Request $request, Response $response) use ($ent
 				session_start();
 			} else{
 				
-				$repository = $entityManager->getRepository(Customer::class);
-				$cust = $repository->findBy(array("customerId" => $customer[0]->getCustomerId()));
-				
-				$cust  = $cust[0];
-				$cust->setCustomerToken($token)
-					->setCustomerDeviceId($uuid);
+				$cust  = $customer[0];
+				$cust->setCustomerToken($token);
+				$cust-->setCustomerDeviceId($uuid);
 				$entityManager->flush();
 				
 			}
@@ -68,7 +69,7 @@ $app->get('/customer', function (Request $request, Response $response) use ($ent
 			$data["message"] = $message;
 		}
 		
-	 	
+		
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
 			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
