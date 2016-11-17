@@ -31,7 +31,7 @@ $app->get('/customer', function (Request $request, Response $response) use ($ent
 		
 		
 		$repository = $entityManager->getRepository(Customer::class);
-		$customer = $repository->findBy(array('customerEmail' => $email, 'customerPassword' => sha1($password)),array('customerEmail' => 'DESC'), 1);
+		$customer = $repository->findBy(array('customerEmail' => $email, 'customerPassword' => sha1($password), 'customerSinValid' => 'S'),array('customerEmail' => 'DESC'), 1);
 		
 		
 		
@@ -68,9 +68,7 @@ $app->get('/customer', function (Request $request, Response $response) use ($ent
 			$data["message"] = $message;
 		}
 		
-		
-		
-		
+	 	
 		return $response->withStatus(200)
 			->withHeader("Content-Type", "application/json")
 			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
