@@ -46,8 +46,8 @@ $app->post('/customer', function (Request $request, Response $response) use ($en
 			} else{
 				
 				$cust  = $customer[0];
-				$cust->setCustomerToken($token);
-				$cust-->setCustomerDeviceId($uuid);
+				$cust->setCustomerToken($token)
+					 ->setCustomerDeviceId($uuid);
 				$entityManager->flush();
 				
 			}
