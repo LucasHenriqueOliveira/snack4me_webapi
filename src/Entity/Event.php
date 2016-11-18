@@ -74,6 +74,7 @@ class Event
 	public function setEventId($eventId)
 	{
 		$this->eventId = $eventId;
+		return $this;
 	}
 	
 	/**
@@ -90,6 +91,7 @@ class Event
 	public function setEventName($eventName)
 	{
 		$this->eventName = $eventName;
+		return $this;
 	}
 	
 	/**
@@ -106,6 +108,7 @@ class Event
 	public function setEventImage($eventImage)
 	{
 		$this->eventImage = $eventImage;
+		return $this;
 	}
 	
 	/**
@@ -122,6 +125,7 @@ class Event
 	public function setEventCityId($eventCityId)
 	{
 		$this->eventCityId = $eventCityId;
+		return $this;
 	}
 	
 	/**
@@ -130,6 +134,7 @@ class Event
 	public function getLatitude()
 	{
 		return $this->latitude;
+		return $this;
 	}
 	
 	/**
@@ -138,6 +143,7 @@ class Event
 	public function setLatitude($latitude)
 	{
 		$this->latitude = $latitude;
+		return $this;
 	}
 	
 	/**
@@ -154,6 +160,7 @@ class Event
 	public function setLongitude($longitude)
 	{
 		$this->longitude = $longitude;
+		return $this;
 	}
 	
 	/**
@@ -170,6 +177,7 @@ class Event
 	public function setEventTaxService($eventTaxService)
 	{
 		$this->eventTaxService = $eventTaxService;
+		return $this;
 	}
 	
 	/**
@@ -186,6 +194,7 @@ class Event
 	public function setEventUserId($eventUserId)
 	{
 		$this->eventUserId = $eventUserId;
+		return $this;
 	}
 	
 	/**
@@ -202,6 +211,7 @@ class Event
 	public function setEventSinActive($eventSinActive)
 	{
 		$this->eventSinActive = $eventSinActive;
+		return $this;
 	}
 
 	

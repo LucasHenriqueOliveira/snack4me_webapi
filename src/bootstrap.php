@@ -51,5 +51,7 @@ require_once __DIR__ . "/routes/routes_category.php";
 require_once __DIR__ . "/routes/routes_dashboard.php";
 //***********************************************dashboard*****************************************************
 require_once __DIR__ . "/routes/routes_costumer.php";
+//***********************************************dashboard*****************************************************
+require_once __DIR__ . "/routes/routes_event.php";
 
 $app->run();
