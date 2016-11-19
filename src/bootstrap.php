@@ -1,7 +1,6 @@
 <?php
 
 header('Content-Type: application/json');
-
 header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Accept, Origin, Content-Type, Cookies, Token, x-access-token, x-key');
@@ -11,17 +10,11 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
  
- 
-#$configuration = [
-#    'settings' => [
-#        'displayErrorDetails' => true,
-#    ],
-#];
+  
 
 
 $entityManager = getEntityManager();
 
-#$c = new \Slim\Container($configuration);
 
 $c = new \Slim\Container();
 
@@ -36,9 +29,6 @@ $app->get('/', function (Request $req,  Response $res, $args = []) {
 });
 
  
-
- 
-
 //***********************************************Users*****************************************************
 require_once __DIR__ . "/routes/routes_user.php";
 //***********************************************Login*****************************************************
