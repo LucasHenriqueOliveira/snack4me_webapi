@@ -35,6 +35,7 @@ $app->get('/event', function (Request $request, Response $response) use ($entity
 				$evento['distance'] = $row['distance'];
 				$evento['image'] = $row['event_image'];
 				$evento['city'] = $row['city_name'];
+				$evento['integration'] = $row['event_integration'];
 				$eventos[] = $evento;
 			}
 		}
@@ -72,7 +73,8 @@ $app->get('/event_call', function (Request $request, Response $response) use ($e
 		$city = filter_var($_GET['city'], FILTER_SANITIZE_STRING);
 	 	
 		$connection = $entityManager->getConnection()->getWrappedConnection();
-		$stmt = $connection->prepare('SELECT *,city.city_name FROM event INNER JOIN city ON event.event_city_id = city.city_id WHERE event.event_city_id = ? AND event.event_sin_active = 1');
+		$stmt = $connection->prepare('SELECT *,city.city_name FROM event INNER JOIN city ON event.event_city_id = city.city_id 
+										WHERE event.event_city_id = ? AND event.event_sin_active = 1');
 		$stmt->bindParam(1, $city, PDO::PARAM_INT);
 		
 		$stmt->execute();
@@ -84,6 +86,7 @@ $app->get('/event_call', function (Request $request, Response $response) use ($e
 				$evento['name'] = $row['event_name'];
 				$evento['image'] = $row['event_image'];
 				$evento['city'] = $row['city_name'];
+				$evento['integration'] = $row['event_integration'];
 				$eventos[] = $evento;
 			}
 		}

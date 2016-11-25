@@ -61,6 +61,12 @@ class Event
     private $eventSinActive = '1';
 	
 	/**
+	 * @Column(name="event_integration", type="integer", nullable=false)
+	 */
+	private $eventIntegration = '0';
+	
+	
+	/**
 	 * @return mixed
 	 */
 	public function getEventId()
@@ -213,6 +219,25 @@ class Event
 		$this->eventSinActive = $eventSinActive;
 		return $this;
 	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getEventIntegration()
+	{
+		return $this->eventIntegration;
+	}
+	
+	/**
+	 * @param mixed $eventIntegration
+	 * @return Event
+	 */
+	public function setEventIntegration($eventIntegration)
+	{
+		$this->eventIntegration = $eventIntegration;
+		return $this;
+	}
 
+	
 	
 }
