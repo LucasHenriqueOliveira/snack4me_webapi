@@ -54,6 +54,121 @@ $app->get('/products/{d}', function (Request $request, Response $response) use (
 	
 });
 
+/** listar os Produtos usado pela App */
+$app->get('/product', function (Request $request, Response $response) use ($entityManager) {
+	date_default_timezone_set('America/Sao_Paulo');
+	try {
+		
+		$data = array();
+		$produtos = array();
+		$concessions = array();
+		
+		$_GET = $request->getQueryParams();
+		$id_event = $_GET['id_event'];
+		$categoria = [];
+		
+		
+		$connection = $entityManager->getConnection()->getWrappedConnection();
+		$query = $connection->prepare('SELECT p.product_category_id, c.category_name_pt, c.category_name_en, c.category_name_es FROM product p INNER JOIN category c ON p.product_category_id = c.category_id
+	        WHERE product_event_id = ? AND product_inventory_current > 0 GROUP BY c.category_id');
+		$query->execute(array($id_event));
+		$num_rows = $query->rowCount();
+		$query->setFetchMode(PDO::FETCH_ASSOC);
+		
+		
+		if($num_rows > 0){
+			
+			while ($row = $query->fetch()) {
+				$category['pt'] = $row['category_name_pt'];
+				$category['en'] = $row['category_name_en'];
+				$category['es'] = $row['category_name_es'];
+				$categoria['id'] = $row['product_category_id'];
+				$categoria['name'] = $category;
+				
+				$query2 = $connection->prepare('SELECT * FROM product WHERE product_event_id = ? AND product_inventory_current > 0 AND product_category_id = ? AND product_active = 1');
+				$query2->execute(array($id_event, $row['product_category_id']));
+				$num_rows2 = $query2->rowCount();
+				$query2->setFetchMode(PDO::FETCH_ASSOC);
+				
+				if($num_rows2 > 0) {
+					while ($row2 = $query2->fetch()) {
+						$product['pt'] = $row2['product_name_pt'];
+						$product['en'] = $row2['product_name_en'];
+						$product['es'] = $row2['product_name_es'];
+						
+						$desc['pt'] = $row2['product_desc_pt'];
+						$desc['en'] = $row2['product_desc_en'];
+						$desc['es'] = $row2['product_desc_es'];
+						
+						$produto['id'] = $row2['product_id'];
+						$produto['number'] = $row2['product_number'];
+						$produto['hour_initial'] = substr($row2['product_hour_initial'],0,5);
+						$produto['hour_final'] = substr($row2['product_hour_final'],0,5);
+						$produto['name'] = $product;
+						$produto['image'] = $row2['product_image'];
+						$produto['price'] = $row2['product_price'];
+						$produto['complement'] = $row2['product_complement'];
+						$produto['desc'] = $desc;
+						
+						$query3 = $connection->prepare('SELECT * FROM type_product WHERE type_product_product_id = ? AND type_product_active = 1');
+						$query3->execute(array($row2->getProductId()));
+						$num_rows3 = $query3->rowCount();
+						$query3->setFetchMode(PDO::FETCH_ASSOC);
+						
+						if($num_rows3 > 0) {
+							while ($row3 = $query3->fetch()) {
+								$type_product['pt'] = $row3['type_product_name_pt'];
+								$type_product['en'] = $row3['type_product_name_en'];
+								$type_product['es'] = $row3['type_product_name_es'];
+								
+								$tipo_produto['id'] = $row3['type_product_id'];
+								$tipo_produto['name'] = $type_product;
+								$tipo_produtos[] = $tipo_produto;
+							}
+						}
+						
+						$produto['type'] = $tipo_produtos;
+						$produtos[] = $produto;
+						unset($tipo_produtos);
+					}
+					$categoria['products'] = $produtos;
+					unset($produtos);
+				}
+				
+				$categorias[] = $categoria;
+			}
+			
+			
+			$query = $connection->prepare('SELECT event_tax_service FROM event WHERE event_id = ?');
+			$query->execute(array($id_event));
+			$num_rows = $query->rowCount();
+			$query->setFetchMode(PDO::FETCH_CLASS);
+			
+			if($num_rows > 0){
+				$row = $query->fetch();
+				$tax_service = $row['event_tax_service'];
+			}
+			
+			$data["error"] = false;
+			$data["products"] = $categorias;
+			$data["tax_service"] = $tax_service;
+		}
+		
+	 
+		return $response->withStatus(200)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	} catch (Exception $e) {
+		
+		$data["status"] = 'error';
+		$data["error"] = true;
+		$data['message'] = $e;
+		return $response->withStatus(500)
+			->withHeader("Content-Type", "application/json")
+			->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
+	
+});
 
 
 /** add Produtos  */
