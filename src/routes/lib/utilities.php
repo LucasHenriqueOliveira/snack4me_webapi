@@ -271,7 +271,8 @@ function geraHTML($order_id, $lang) {
 function geraPDF($titulo, $html) {
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	
-	require_once "./dompdf/dompdf_config.inc.php";
+ 
+	require_once "$root/hotel/snack4me_webapi/src/lib/dompdf/dompdf_config.inc.php";
 	
 	$dompdf = new DOMPDF();
 	$dompdf->set_paper("A4", "portrail"); // Altera o papel para modo paisagem.
