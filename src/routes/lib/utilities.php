@@ -4,8 +4,8 @@ function enviarEmail($nome_destinatario, $destinatario, $assunto, $mensagem, $ti
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	// Inclui o arquivo class.phpmailer.php localizado na pasta phpmailer
 	
-	require "$root/hotel/snack4me_webapi/src/lib/phpmailer/class.smtp.php";
-	require "$root/hotel/snack4me_webapi/src/lib/phpmailer/class.phpmailer.php";
+	require "$root/hotel/snack4me_webapi/src/routes/lib/phpmailer/class.smtp.php";
+	require "$root/hotel/snack4me_webapi/src/routes/lib/phpmailer/class.phpmailer.php";
 	
 	// Inicia a classe PHPMailer
 	$mail = new PHPMailer();
@@ -271,8 +271,8 @@ function geraHTML($order_id, $lang) {
 function geraPDF($titulo, $html) {
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	
- 
-	require_once "$root/hotel/snack4me_webapi/src/lib/dompdf/dompdf_config.inc.php";
+	 
+	require_once "$root/hotel/snack4me_webapi/src/routes/lib/dompdf/dompdf_config.inc.php";
 	
 	$dompdf = new DOMPDF();
 	$dompdf->set_paper("A4", "portrail"); // Altera o papel para modo paisagem.
