@@ -46,7 +46,7 @@ $app->post('/customer', function (Request $request, Response $response) use ($en
 				$_SESSION['XSRF'] = $token;
 			} else{
 				$query = $connection->prepare("UPDATE `customer` SET `customer_token` = ?, `customer_device_id` = ? WHERE `customer_id` = ?");
-				$query->execute(array($token, $uuid, $row->getCustomerId()));
+				$query->execute(array($token, $uuid, $row['customer_id']));
 			}
 			
 			$user['id'] = $row['customer_id'];
