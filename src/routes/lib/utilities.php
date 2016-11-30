@@ -48,7 +48,7 @@ function enviarEmail($nome_destinatario, $destinatario, $assunto, $mensagem, $ti
 	// =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	//$mail->AddAttachment("c:/temp/documento.pdf", "novo_nome.pdf");  // Insere um anexo
 	if($tipo){
-		$path = "./orders/" . $titulo;
+		$path = "../../../../orders".$titulo;
 		chmod($path, 0777);
 	
 		$mail->AddAttachment($path);  // Insere um anexo
