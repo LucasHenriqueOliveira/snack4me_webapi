@@ -219,13 +219,16 @@ $app->post('/order', function (Request $request, Response $response) use ($entit
 		$id = $_POST['id'];
 		$email = $_POST['email'];
 		
+		
+		
+		
 		$connection = $entityManager->getConnection()->getWrappedConnection();
-		$query = $connection->prepare('SELECT *,
-			DATE_FORMAT(o.order_date, "%d/%m/%Y %H:%i") as order_date,
-			o.order_tax_service, s.status_name_pt, s.status_name_en, s.status_name_es, o.order_local_order_id
-			FROM `order` as o INNER JOIN `event` as e ON o.order_event_id = e.event_id
-			INNER JOIN `status` as s ON o.order_status_id = s.status_id
-			WHERE order_id = ? and order_customer_id = ? and order_customer_email = ? LIMIT 1');
+			$query = $connection->prepare('SELECT *,
+				DATE_FORMAT(o.order_date, "%d/%m/%Y %H:%i") as order_date,
+				o.order_tax_service, s.status_name_pt, s.status_name_en, s.status_name_es, o.order_local_order_id
+				FROM `order` as o INNER JOIN `event` as e ON o.order_event_id = e.event_id
+				INNER JOIN `status` as s ON o.order_status_id = s.status_id
+				WHERE order_id = ? and order_customer_id = ? and order_customer_email = ? LIMIT 1');
 		$query->execute(array($order, $id, $email));
 		$num_rows = $query->rowCount();
 		$query->setFetchMode(PDO::FETCH_ASSOC);
@@ -264,10 +267,10 @@ $app->post('/order', function (Request $request, Response $response) use ($entit
 			
 			while ($row2 = $query2->fetch()){
 				
-				$query3 = $connection->prepare('SELECT i.item_product_id, i.item_id, i.item_type_product_desc, i.item_type_product_type_product_id
+				$query3 = $connection->prepare('SELECT 	 i.item_type_product_desc, i.item_type_product_type_product_id
                                       FROM item_type_product as i
                                       WHERE i.item_type_product_product_id = ? AND i.item_type_product_item_id = ?');
-				$query3->execute(array($row2['item_product_id'], $row2['item_id']));
+				$query3->execute(array($row2['	item_product_id'], $row2['item_id']));
 				
 				$tipo_produtos = array();
 				while ($row3 = $query3->fetch()){
