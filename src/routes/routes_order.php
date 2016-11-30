@@ -207,6 +207,8 @@ $app->post('/order', function (Request $request, Response $response) use ($entit
 	$data = array();
 	
 	try{
+		
+		
 		$_POST = $request->getParsedBody();
 		
 		$products = array();
@@ -307,7 +309,7 @@ $app->post('/order', function (Request $request, Response $response) use ($entit
 			$query5 = $connection->prepare('SELECT local_order_name_pt, local_order_name_en, local_order_name_es
                               FROM local_order
                               WHERE local_order_id = ?');
-			$query5->execute(array($row->getOrderLocalOrderId()));
+			$query5->execute(array($row['order_local_order_id']));
 			$row5 = $query5->fetch();
 			
 			$local['pt'] = $row5['local_order_name_pt'];
