@@ -572,7 +572,7 @@ $app->post('/checkout', function (Request $request, Response $response) use ($en
 				$ve = rtrim(strtr(base64_encode(gzdeflate($input, 9)), $arr), '=');
 				
 				try{
-					include ('../lib/utilities.php');
+					include ('lib/utilities.php');
 					
 					$titulo = $order_tracking_number . ".pdf";
 					$html = geraHTML($order_id, $lang);

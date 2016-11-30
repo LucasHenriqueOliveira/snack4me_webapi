@@ -142,7 +142,7 @@ $app->get('/product', function (Request $request, Response $response) use ($enti
 			$query = $connection->prepare('SELECT event_tax_service FROM event WHERE event_id = ?');
 			$query->execute(array($id_event));
 			$num_rows = $query->rowCount();
-			$query->setFetchMode(PDO::FETCH_CLASS);
+			$query->setFetchMode(PDO::FETCH_ASSOC);
 			
 			if($num_rows > 0){
 				$row = $query->fetch();

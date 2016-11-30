@@ -4,8 +4,8 @@ function enviarEmail($nome_destinatario, $destinatario, $assunto, $mensagem, $ti
 	$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 	// Inclui o arquivo class.phpmailer.php localizado na pasta phpmailer
 	
-	require "./phpmailer/class.smtp.php";
-	require "./phpmailer/class.phpmailer.php";
+	require "$root/hotel/lib/phpmailer/class.smtp.php";
+	require "$root/hotel/lib/phpmailer/class.phpmailer.php";
 	
 	// Inicia a classe PHPMailer
 	$mail = new PHPMailer();
