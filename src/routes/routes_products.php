@@ -111,7 +111,7 @@ $app->get('/product', function (Request $request, Response $response) use ($enti
 						$produto['desc'] = $desc;
 						
 						$query3 = $connection->prepare('SELECT * FROM type_product WHERE type_product_product_id = ? AND type_product_active = 1');
-						$query3->execute(array($row2->getProductId()));
+						$query3->execute(array($row2['product_id']));
 						$num_rows3 = $query3->rowCount();
 						$query3->setFetchMode(PDO::FETCH_ASSOC);
 						
