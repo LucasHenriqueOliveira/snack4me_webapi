@@ -400,6 +400,7 @@ $app->post('/checkout', function (Request $request, Response $response) use ($en
 		$lang = $_POST["lang"];
 		$schedule_time = '';
 		$schedule = 0;
+		$descLocal = $_POST['descLocal'];
 		
 		if(isset($_POST["schedule"]) && !empty($_POST['schedule']) && $_POST['schedule'] != 'undefined'){
 			$schedule = new DateTime($_POST["schedule"]);
@@ -502,10 +503,11 @@ $app->post('/checkout', function (Request $request, Response $response) use ($en
                             `order_event_id`,
                             `order_schedule_date`,
                             `order_schedule`,
-                            `order_status_id`)
+                            `order_status_id`,
+                            `order_local_order_desc`)
       VALUES(" . $id_user . ", '" . $email . "', '" . $order_tracking_number . "', '" . $date . "', '" . $seat . "',
       '" . $floor . "', '" . $local . "', " . $subtotal . ",
-      " . $discount . ", " . $tax_service . ", " . $total . ", '" . $coupon_id . "', " . $id_event . ", '" . $schedule_time . "' , '" . $schedule . "' ,1)";
+      " . $discount . ", " . $tax_service . ", " . $total . ", '" . $coupon_id . "', " . $id_event . ", '" . $schedule_time . "' , '" . $schedule . "' ,1, '" . $descLocal . "' )";
 				
 				$query = $connection->prepare($sql);
 				$query->execute();

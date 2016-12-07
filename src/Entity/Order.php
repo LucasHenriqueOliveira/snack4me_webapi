@@ -51,7 +51,18 @@ class Order
      * @Column(name="order_local_order_id", type="integer", nullable=true)
      */
     private $orderLocalOrderId;
+	
+	
+	/**
+	 * @Column(name="order_local_order_desc", type="string", nullable=true)
+	 */
+	private $orderLocalOrderDesc;
 
+
+
+
+	
+	
     /**
      * @Column(name="order_price", type="decimal", precision=10, scale=2, nullable=false)
      */
@@ -477,6 +488,24 @@ class Order
 	public function setOrderZone($orderZone)
 	{
 		$this->orderZone = $orderZone;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getOrderLocalOrderDesc()
+	{
+		return $this->orderLocalOrderDesc;
+	}
+	
+	/**
+	 * @param mixed $orderLocalOrderDesc
+	 * @return Order
+	 */
+	public function setOrderLocalOrderDesc($orderLocalOrderDesc)
+	{
+		$this->orderLocalOrderDesc = $orderLocalOrderDesc;
 		return $this;
 	}
 	
