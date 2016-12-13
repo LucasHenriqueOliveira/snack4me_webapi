@@ -123,6 +123,11 @@ class Order
 	 */
 	private $orderZone;
 	
+	/**
+	 * @Column(name="order_cpf", type="string", length=15, nullable=true)
+	 */
+	private $orderCpf;
+	
 	
 	
 	/**
@@ -506,6 +511,24 @@ class Order
 	public function setOrderLocalOrderDesc($orderLocalOrderDesc)
 	{
 		$this->orderLocalOrderDesc = $orderLocalOrderDesc;
+		return $this;
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function getOrderCpf()
+	{
+		return $this->orderCpf;
+	}
+	
+	/**
+	 * @param mixed $orderCpf
+	 * @return Order
+	 */
+	public function setOrderCpf($orderCpf)
+	{
+		$this->orderCpf = $orderCpf;
 		return $this;
 	}
 	
