@@ -70,7 +70,7 @@ $app->get('/product', function (Request $request, Response $response) use ($enti
 		
 		$connection = $entityManager->getConnection()->getWrappedConnection();
 		$query = $connection->prepare('SELECT p.product_category_id, c.category_name_pt, c.category_name_en, c.category_name_es FROM product p INNER JOIN category c ON p.product_category_id = c.category_id
-	        WHERE product_event_id = ? AND product_inventory_current > 0 GROUP BY c.category_id');
+	        WHERE product_event_id = ? AND product_inventory_current > 0 AND product_active = 1 GROUP BY c.category_id');
 		$query->execute(array($id_event));
 		$num_rows = $query->rowCount();
 		$query->setFetchMode(PDO::FETCH_ASSOC);
